@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "start": "npm run tsc && node ./dist/app.js",
+    "start": "export DEBUG=*, npm run tsc && node ./dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
