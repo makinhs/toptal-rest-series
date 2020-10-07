@@ -10,8 +10,8 @@ import {UsersRoutes} from './users/users.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = 3010;
-const routes: any = [];
+const port = 3000;
+const routes: Array<CommonRoutesConfig> = [];
 const debug = require('debug')('app');
 
 app.use(bodyparser.json({limit: '5mb'}));
@@ -56,10 +56,10 @@ app.use(expressWinston.errorLogger({
 
 
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.status(200).send(`Server running at port ${port}`)
+    res.status(200).send(`Server running at http://localhost:${port}`)
 });
 server.listen(port, () => {
-    debug(`Server running at port ${port}`);
+    debug(`Server running at  http://localhost:${port}`);
     routes.forEach((route: CommonRoutesConfig) => {
         debug(`Routes configured for ${route.getName()}`);
     });
