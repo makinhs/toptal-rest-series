@@ -1,7 +1,7 @@
-import {CommonRoutesConfig, configureRoutes} from '../common/common.routes.config';
+import {CommonRoutesConfig, ConfigureRoutes} from '../common/common.routes.config';
 import express from 'express';
 
-export class UsersRoutes extends CommonRoutesConfig implements configureRoutes {
+export class UsersRoutes extends CommonRoutesConfig implements ConfigureRoutes {
     constructor(app: express.Application) {
         super(app, 'UsersRoute');
         this.configureRoutes();
@@ -35,5 +35,7 @@ export class UsersRoutes extends CommonRoutesConfig implements configureRoutes {
             .delete((req: express.Request, res: express.Response) => {
                 res.status(200).send(`Delete requested for id ${req.params.userId}`);
             });
+
+        return this.app;
     }
 }
