@@ -4,9 +4,8 @@
   "description": "A guide to REST API using Typescript created for Toptal blog",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
-    "start": "npm run tsc && node ./dist/app.js",
-    "debug": "export DEBUG=* && npm run tsc && node ./dist/app.js",
+    "start": "tsc && node ./dist/app.js",
+    "debug": "export DEBUG=* && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
