@@ -27,12 +27,14 @@
   },
   "homepage": "https://github.com/makinhs/toptal-rest-series#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "debug": "^4.2.0",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.7",
     "@types/express": "^4.17.2",
     "source-map-support": "^0.5.16",
     "tslint": "^6.0.0",
