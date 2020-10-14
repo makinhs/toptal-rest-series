@@ -6,11 +6,13 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors'
 import {CommonRoutesConfig} from './common/common.routes.config';
 import {UsersRoutes} from './users/users.routes.config';
+import debug from 'debug';
+
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = 3000;
+const port: Number = 3000;
 const routes: Array<CommonRoutesConfig> = [];
-const debug = require('debug')('app');
+const debugLog: debug.IDebugger = debug('app');
 
 app.use(bodyparser.json());
 app.use(cors());
@@ -42,8 +44,8 @@ app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send(`Server running at http://localhost:${port}`)
 });
 server.listen(port, () => {
-    debug(`Server running at http://localhost:${port}`);
+    debugLog(`Server running at http://localhost:${port}`);
     routes.forEach((route: CommonRoutesConfig) => {
-        debug(`Routes configured for ${route.getName()}`);
+        debugLog(`Routes configured for ${route.getName()}`);
     });
 });
