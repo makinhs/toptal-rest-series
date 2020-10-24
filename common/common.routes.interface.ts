@@ -1,5 +1,5 @@
 import express from "express";
 
-export interface ConfigureRoutes {
+export interface CommonRoutesInterface {
     configureRoutes(): express.Application;
 }
