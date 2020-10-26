@@ -4,7 +4,7 @@ import express from 'express';
 
 export class UsersRoutes extends CommonRoutesConfig implements CommonRoutesInterface {
     constructor(app: express.Application) {
-        super(app, 'UsersRoute');
+        super(app, 'UsersRoutes');
         this.configureRoutes();
     }
 
