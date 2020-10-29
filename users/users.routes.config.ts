@@ -1,11 +1,9 @@
 import {CommonRoutesConfig} from '../common/common.routes.config';
-import {CommonRoutesInterface} from '../common/common.routes.interface'
 import express from 'express';
 
-export class UsersRoutes extends CommonRoutesConfig implements CommonRoutesInterface {
+export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
-        super(app, 'UsersRoute');
-        this.configureRoutes();
+        super(app, 'UsersRoutes');
     }
 
     configureRoutes() {
