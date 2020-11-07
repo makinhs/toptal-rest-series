@@ -1,4 +1,5 @@
 import {CommonRoutesConfig} from '../common/common.routes.config';
+import UsersController from './controllers/users.controller';
 import express from 'express';
 
 export class UsersRoutes extends CommonRoutesConfig {
@@ -7,14 +8,9 @@ export class UsersRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes() {
-
         this.app.route(`/users`)
-            .get((req: express.Request, res: express.Response) => {
-                res.status(200).send(`List of users`);
-            })
-            .post((req: express.Request, res: express.Response) => {
-                res.status(200).send(`Post to users`);
-            });
+            .get(UsersController.listUsers)
+            .post(UsersController.createUser);
 
         this.app.route(`/users/:userId`)
             .all((req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -22,18 +18,10 @@ export class UsersRoutes extends CommonRoutesConfig {
                 // It doesn't accomplish anything just yet---it simply passes control to the next applicable function below using next()
                 next();
             })
-            .get((req: express.Request, res: express.Response) => {
-                res.status(200).send(`GET requested for id ${req.params.userId}`);
-            })
-            .put((req: express.Request, res: express.Response) => {
-                res.status(200).send(`Put requested for id ${req.params.userId}`);
-            })
-            .patch((req: express.Request, res: express.Response) => {
-                res.status(200).send(`Patch requested for id ${req.params.userId}`);
-            })
-            .delete((req: express.Request, res: express.Response) => {
-                res.status(200).send(`Delete requested for id ${req.params.userId}`);
-            });
+            .get(UsersController.getUserById)
+            .put(UsersController.put)
+            .patch(UsersController.patch)
+            .delete(UsersController.removeUser);
 
         return this.app;
     }
