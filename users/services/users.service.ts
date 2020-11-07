@@ -40,6 +40,9 @@ class UsersService implements CRUD{
         return GenericInMemoryDao.putUserById(resource);
     };
 
+    async getByEmail(email: string) {
+        return GenericInMemoryDao.getByEmail(email);
+    }
 }
 
 export default UsersService.getInstance();

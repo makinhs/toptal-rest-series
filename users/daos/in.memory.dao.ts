@@ -71,6 +71,17 @@ class GenericInMemoryDao {
         return `${userId} removed`;
     }
 
+    getByEmail(email: string) {
+        return new Promise((resolve) => {
+            const objIndex = this.users.findIndex((obj: { email: string; }) => obj.email === email);
+            let currentUser = this.users[objIndex];
+            if (currentUser) {
+                resolve(currentUser);
+            } else {
+                resolve(null);
+            }
+        });
+    }
 }
 
 export default GenericInMemoryDao.getInstance();
