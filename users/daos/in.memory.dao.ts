@@ -32,7 +32,6 @@ class GenericInMemoryDao {
     }
 
     getUserById(userId: string) {
-        console.log(this.users);
         return this.users.find((user: { id: string; }) => user.id === userId);
     }
 

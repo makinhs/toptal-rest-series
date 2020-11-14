@@ -1,13 +1,9 @@
-import GenericInMemoryDao from '../daos/in.memory.dao';
+import genericInMemoryDao from '../daos/in.memory.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
 import {UsersDto} from "../dto/users.model";
 
 class UsersService implements CRUD{
     private static instance: UsersService;
-
-    constructor() {
-       
-    }
 
     static getInstance(): UsersService {
         if (!UsersService.instance) {
@@ -17,31 +13,31 @@ class UsersService implements CRUD{
     }
 
     create(resource: UsersDto) {
-        return GenericInMemoryDao.addUser(resource);
+        return genericInMemoryDao.addUser(resource);
     }
 
     deleteById(resourceId: string) {
-        return GenericInMemoryDao.removeUserById(resourceId);
+        return genericInMemoryDao.removeUserById(resourceId);
     };
 
     list(limit: number, page: number) {
-        return GenericInMemoryDao.getUsers();
+        return genericInMemoryDao.getUsers();
     };
 
     patchById(resource: UsersDto) {
-        return GenericInMemoryDao.patchUserById(resource)
+        return genericInMemoryDao.patchUserById(resource)
     };
 
     readById(resourceId: string) {
-        return GenericInMemoryDao.getUserById(resourceId);
+        return genericInMemoryDao.getUserById(resourceId);
     };
 
     updateById(resource: UsersDto) {
-        return GenericInMemoryDao.putUserById(resource);
+        return genericInMemoryDao.putUserById(resource);
     };
 
     async getByEmail(email: string) {
-        return GenericInMemoryDao.getByEmail(email);
+        return genericInMemoryDao.getByEmail(email);
     }
 }
 
