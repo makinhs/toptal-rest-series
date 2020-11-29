@@ -32,7 +32,7 @@ class UsersController {
     }
 
     put(req: express.Request, res: express.Response) {
-        usersService.updateById(req.body);
+        usersService.updateById({id: req.params.userId, ...req.body});
         res.status(204).send(``);
     }
 
