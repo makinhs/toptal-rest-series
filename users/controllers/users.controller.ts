@@ -1,6 +1,6 @@
 import express from 'express';
 import usersService from '../services/users.service';
-
+import argon2 from 'argon2';
 class UsersController {
     private static instance: UsersController;
 
@@ -21,17 +21,22 @@ class UsersController {
         res.status(200).send(user);
     }
 
-    createUser(req: express.Request, res: express.Response) {
+    async createUser(req: express.Request, res: express.Response) {
+        req.body.password = await argon2.hash(req.body.password);
         const userId = usersService.create(req.body);
         res.status(201).send({id: userId});
     }
 
-    patch(req: express.Request, res: express.Response) {
+    async patch(req: express.Request, res: express.Response) {
+        if(req.body.password){
+            req.body.password = await argon2.hash(req.body.password);
+        }
         usersService.patchById(req.body);
         res.status(204).send(``);
     }
 
-    put(req: express.Request, res: express.Response) {
+    async put(req: express.Request, res: express.Response) {
+        req.body.password = await argon2.hash(req.body.password);
         usersService.updateById({id: req.params.userId, ...req.body});
         res.status(204).send(``);
     }
