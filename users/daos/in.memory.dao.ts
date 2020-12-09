@@ -1,5 +1,8 @@
 import {UsersDto} from "../dto/users.model";
 import shortid from "shortid";
+import debug from 'debug';
+
+const log: debug.IDebugger = debug('app:in-memory-dao');
 
 /**
  * NEVER USER THIS CLASS IN REAL LIFE.
@@ -11,7 +14,7 @@ class GenericInMemoryDao {
     users: Array<UsersDto> = [];
 
     constructor() {
-        console.log('Created new instance of GenericInMemoryDao');
+        log('Created new instance of GenericInMemoryDao');
     }
 
     static getInstance(): GenericInMemoryDao {
