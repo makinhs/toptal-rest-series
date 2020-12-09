@@ -1,6 +1,6 @@
 import {CommonRoutesConfig} from '../common/common.routes.config';
 import UsersController from './controllers/users.controller';
-import UsersMiddleware from './middlewares/users.middleware';
+import UsersMiddleware from './middleware/users.middleware';
 import express from 'express';
 
 export class UsersRoutes extends CommonRoutesConfig {
@@ -12,7 +12,7 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.route(`/users`)
             .get(UsersController.listUsers)
             .post(
-                UsersMiddleware.validateRequiredCreateUserBodyFields,
+                UsersMiddleware.validateRequiredUserBodyFields,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser);
 
