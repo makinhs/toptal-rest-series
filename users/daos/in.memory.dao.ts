@@ -40,11 +40,7 @@ class GenericInMemoryDao {
 
     putUserById(user: UsersDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
-        const updatedUsers = [
-            ...this.users.slice(0, objIndex),
-            user,
-            ...this.users.slice(objIndex + 1),
-        ];
+        this.users.splice(objIndex, 1, user);
         this.users = updatedUsers;
         return `${user.id} updated via put`;
     }
@@ -58,22 +54,18 @@ class GenericInMemoryDao {
                 currentUser[i] = user[i];
             }
         }
-        this.users = [
-            ...this.users.slice(0, objIndex),
-            currentUser,
-            ...this.users.slice(objIndex + 1),
-        ];
+        this.users.splice(objIndex, 1, currentUser);
         return `${user.id} patched`;
     }
 
 
     removeUserById(userId: string) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === userId);
-        this.users = this.users.splice(objIndex, 1);
+        this.users.splice(objIndex, 1);
         return `${userId} removed`;
     }
 
-    getByEmail(email: string) {
+    getUserByEmail(email: string) {
         return new Promise((resolve) => {
             const objIndex = this.users.findIndex((obj: { email: string; }) => obj.email === email);
             let currentUser = this.users[objIndex];
