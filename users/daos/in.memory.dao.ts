@@ -41,7 +41,6 @@ class GenericInMemoryDao {
     putUserById(user: UsersDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         this.users.splice(objIndex, 1, user);
-        this.users = updatedUsers;
         return `${user.id} updated via put`;
     }
 
