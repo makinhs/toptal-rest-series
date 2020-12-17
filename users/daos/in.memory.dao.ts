@@ -24,27 +24,27 @@ class GenericInMemoryDao {
         return GenericInMemoryDao.instance;
     }
 
-    addUser(user: UsersDto) {
+    async addUser(user: UsersDto) {
         user.id = shortid.generate();
         this.users.push(user);
         return user.id;
     }
 
-    getUsers() {
+    async getUsers() {
         return this.users;
     }
 
-    getUserById(userId: string) {
+    async getUserById(userId: string) {
         return this.users.find((user: { id: string; }) => user.id === userId);
     }
 
-    putUserById(user: UsersDto) {
+    async putUserById(user: UsersDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         this.users.splice(objIndex, 1, user);
         return `${user.id} updated via put`;
     }
 
-    patchUserById(user: UsersDto) {
+    async patchUserById(user: UsersDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         let currentUser = this.users[objIndex];
         for (let i in user) {
@@ -58,22 +58,20 @@ class GenericInMemoryDao {
     }
 
 
-    removeUserById(userId: string) {
+    async removeUserById(userId: string) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === userId);
         this.users.splice(objIndex, 1);
         return `${userId} removed`;
     }
 
-    getUserByEmail(email: string) {
-        return new Promise((resolve) => {
-            const objIndex = this.users.findIndex((obj: { email: string; }) => obj.email === email);
-            let currentUser = this.users[objIndex];
-            if (currentUser) {
-                resolve(currentUser);
-            } else {
-                resolve(null);
-            }
-        });
+    async getUserByEmail(email: string) {
+        const objIndex = this.users.findIndex((obj: { email: string; }) => obj.email === email);
+        let currentUser = this.users[objIndex];
+        if (currentUser) {
+            return currentUser;
+        } else {
+            return null;
+        }
     }
 }
 

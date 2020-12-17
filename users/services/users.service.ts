@@ -2,7 +2,7 @@ import genericInMemoryDao from '../daos/in.memory.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
 import {UsersDto} from "../dto/users.model";
 
-class UsersService implements CRUD{
+class UsersService implements CRUD {
     private static instance: UsersService;
 
     static getInstance(): UsersService {
@@ -12,32 +12,32 @@ class UsersService implements CRUD{
         return UsersService.instance;
     }
 
-    create(resource: UsersDto) {
-        return genericInMemoryDao.addUser(resource);
+    async create(resource: UsersDto) {
+        return await genericInMemoryDao.addUser(resource);
     }
 
-    deleteById(resourceId: string) {
-        return genericInMemoryDao.removeUserById(resourceId);
+    async deleteById(resourceId: string) {
+        return await genericInMemoryDao.removeUserById(resourceId);
     };
 
-    list(limit: number, page: number) {
-        return genericInMemoryDao.getUsers();
+    async list(limit: number, page: number) {
+        return await genericInMemoryDao.getUsers();
     };
 
-    patchById(resource: UsersDto) {
-        return genericInMemoryDao.patchUserById(resource)
+    async patchById(resource: UsersDto) {
+        return await genericInMemoryDao.patchUserById(resource)
     };
 
-    readById(resourceId: string) {
-        return genericInMemoryDao.getUserById(resourceId);
+    async readById(resourceId: string) {
+        return await genericInMemoryDao.getUserById(resourceId);
     };
 
-    updateById(resource: UsersDto) {
-        return genericInMemoryDao.putUserById(resource);
+    async updateById(resource: UsersDto) {
+        return await genericInMemoryDao.putUserById(resource);
     };
 
     async getUserByEmail(email: string) {
-        return genericInMemoryDao.getUserByEmail(email);
+        return await genericInMemoryDao.getUserByEmail(email);
     }
 }
 
