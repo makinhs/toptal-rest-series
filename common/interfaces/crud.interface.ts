@@ -1,8 +1,8 @@
 export interface CRUD {
-    list: (limit: number, page: number) => any,
-    create: (resource: any) => any,
-    updateById: (resourceId: any) => string,
-    readById: (resourceId: any) => any,
-    deleteById: (resourceId: any) => string,
-    patchById: (resourceId: any) => string,
+    list: (limit: number, page: number) => Promise<any>,
+    create: (resource: any) => Promise<any>,
+    updateById: (resourceId: any) => Promise<string>,
+    readById: (resourceId: any) => Promise<any>,
+    deleteById: (resourceId: any) => Promise<string>,
+    patchById: (resourceId: any) => Promise<string>,
 }
