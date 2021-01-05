@@ -11,19 +11,19 @@ class UsersController {
         return UsersController.instance;
     }
 
-    listUsers(req: express.Request, res: express.Response) {
-        const users = usersService.list(100, 0);
+    async listUsers(req: express.Request, res: express.Response) {
+        const users = await usersService.list(100, 0);
         res.status(200).send(users);
     }
 
-    getUserById(req: express.Request, res: express.Response) {
-        const user = usersService.readById(req.params.userId);
+    async getUserById(req: express.Request, res: express.Response) {
+        const user = await usersService.readById(req.params.userId);
         res.status(200).send(user);
     }
 
     async createUser(req: express.Request, res: express.Response) {
         req.body.password = await argon2.hash(req.body.password);
-        const userId = usersService.create(req.body);
+        const userId = await usersService.create(req.body);
         res.status(201).send({id: userId});
     }
 
@@ -31,18 +31,18 @@ class UsersController {
         if(req.body.password){
             req.body.password = await argon2.hash(req.body.password);
         }
-        usersService.patchById(req.body);
+        await usersService.patchById(req.body);
         res.status(204).send(``);
     }
 
     async put(req: express.Request, res: express.Response) {
         req.body.password = await argon2.hash(req.body.password);
-        usersService.updateById({id: req.params.userId, ...req.body});
+        await usersService.updateById({id: req.params.userId, ...req.body});
         res.status(204).send(``);
     }
 
-    removeUser(req: express.Request, res: express.Response) {
-        usersService.deleteById(req.params.userId);
+    async removeUser(req: express.Request, res: express.Response) {
+        await usersService.deleteById(req.params.userId);
         res.status(204).send(``);
     }
 }
