@@ -36,8 +36,13 @@ class UsersService implements CRUD{
         return genericInMemoryDao.putUserById(resource);
     };
 
-    async getUserByEmail(email: string) {
-        return genericInMemoryDao.getUserByEmail(email);
+    async getUserByEmail(email: string): Promise<UsersDto | null> {
+        const user = await genericInMemoryDao.getUserByEmail(email);
+        if(user){
+            return <UsersDto>user;
+        }else{
+            return null;
+        }
     }
 }
 
