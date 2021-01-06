@@ -9,19 +9,19 @@ const log: debug.IDebugger = debug('app:in-memory-dao');
  * This class was created to easy it up the explanation of other topics meanwhile writing the articles.
  * For any scenario consider using an ODM/ORM to manage your own database in a better way.
  */
-class GenericInMemoryDao {
-    private static instance: GenericInMemoryDao;
+class UsersDao {
+    private static instance: UsersDao;
     users: Array<UsersDto> = [];
 
     constructor() {
-        log('Created new instance of GenericInMemoryDao');
+        log('Created new instance of UsersDao');
     }
 
-    static getInstance(): GenericInMemoryDao {
-        if (!GenericInMemoryDao.instance) {
-            GenericInMemoryDao.instance = new GenericInMemoryDao();
+    static getInstance(): UsersDao {
+        if (!UsersDao.instance) {
+            UsersDao.instance = new UsersDao();
         }
-        return GenericInMemoryDao.instance;
+        return UsersDao.instance;
     }
 
     async addUser(user: UsersDto) {
@@ -75,4 +75,4 @@ class GenericInMemoryDao {
     }
 }
 
-export default GenericInMemoryDao.getInstance();
+export default UsersDao.getInstance();

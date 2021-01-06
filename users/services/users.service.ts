@@ -1,4 +1,4 @@
-import genericInMemoryDao from '../daos/in.memory.dao';
+import UsersDao from '../daos/users.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
 import {UsersDto} from "../dto/users.model";
 
@@ -13,31 +13,31 @@ class UsersService implements CRUD {
     }
 
     async create(resource: UsersDto) {
-        return await genericInMemoryDao.addUser(resource);
+        return await UsersDao.addUser(resource);
     }
 
     async deleteById(resourceId: string) {
-        return await genericInMemoryDao.removeUserById(resourceId);
+        return await UsersDao.removeUserById(resourceId);
     };
 
     async list(limit: number, page: number) {
-        return await genericInMemoryDao.getUsers();
+        return await UsersDao.getUsers();
     };
 
     async patchById(resource: UsersDto) {
-        return await genericInMemoryDao.patchUserById(resource)
+        return await UsersDao.patchUserById(resource)
     };
 
     async readById(resourceId: string) {
-        return await genericInMemoryDao.getUserById(resourceId);
+        return await UsersDao.getUserById(resourceId);
     };
 
     async updateById(resource: UsersDto) {
-        return await genericInMemoryDao.putUserById(resource);
+        return await UsersDao.putUserById(resource);
     };
 
     async getUserByEmail(email: string): Promise<UsersDto | null> {
-        const user = await genericInMemoryDao.getUserByEmail(email);
+        const user = await UsersDao.getUserByEmail(email);
         if (user) {
             return <UsersDto>user;
         } else {
