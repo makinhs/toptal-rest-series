@@ -23,14 +23,12 @@ export class UsersRoutes extends CommonRoutesConfig {
             .delete(UsersController.removeUser);
 
         this.app.put(`/users/:userId`,[
-            UsersMiddleware.validateUserExists,
             UsersMiddleware.validateRequiredUserBodyFields,
             UsersMiddleware.validateSameEmailBelongToSameUser,
             UsersController.put
         ]);
 
         this.app.patch(`/users/:userId`, [
-            UsersMiddleware.validateUserExists,
             UsersMiddleware.validatePatchEmail,
             UsersController.patch
         ]);
