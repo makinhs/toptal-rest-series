@@ -36,13 +36,8 @@ class UsersService implements CRUD {
         return await UsersDao.putUserById(resource);
     };
 
-    async getUserByEmail(email: string): Promise<UsersDto | null> {
-        const user = await UsersDao.getUserByEmail(email);
-        if (user) {
-            return <UsersDto>user;
-        } else {
-            return null;
-        }
+    async getUserByEmail(email: string) {
+        return UsersDao.getUserByEmail(email);
     }
 }
 

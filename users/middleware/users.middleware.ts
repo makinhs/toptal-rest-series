@@ -11,7 +11,7 @@ class UsersMiddleware {
         return UsersMiddleware.instance;
     }
 
-    validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
+    async validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.email && req.body.password) {
             next();
         } else {
