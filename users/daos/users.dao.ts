@@ -47,10 +47,11 @@ class UsersDao {
     async patchUserById(user: UsersDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         let currentUser = this.users[objIndex];
-        for (let i in user) {
-            if (i !== 'id' && i in currentUser  ) {
+        const allowedPatchFields = ["password", "firstName", "lastName", "permissionLevel"];
+        for (let field of allowedPatchFields) {
+            if (field in user) {
                 // @ts-ignore
-                currentUser[i] = user[i];
+                currentUser[field] = user[field];
             }
         }
         this.users.splice(objIndex, 1, currentUser);
