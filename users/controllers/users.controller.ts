@@ -1,6 +1,9 @@
 import express from 'express';
 import usersService from '../services/users.service';
 import argon2 from 'argon2';
+import debug from 'debug';
+
+const log: debug.IDebugger = debug('app:users-controller');
 class UsersController {
     private static instance: UsersController;
 
@@ -31,18 +34,18 @@ class UsersController {
         if(req.body.password){
             req.body.password = await argon2.hash(req.body.password);
         }
-        await usersService.patchById(req.body);
+        log(await usersService.patchById(req.body));
         res.status(204).send(``);
     }
 
     async put(req: express.Request, res: express.Response) {
         req.body.password = await argon2.hash(req.body.password);
-        await usersService.updateById({id: req.params.userId, ...req.body});
+        log(await usersService.updateById({id: req.params.userId, ...req.body}));
         res.status(204).send(``);
     }
 
     async removeUser(req: express.Request, res: express.Response) {
-        await usersService.deleteById(req.params.userId);
+        log(await usersService.deleteById(req.params.userId));
         res.status(204).send(``);
     }
 }
