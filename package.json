@@ -31,6 +31,7 @@
     "debug": "^4.2.0",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
+    "mongoose": "~5.x.xx",
     "shortid": "^2.2.16",
     "winston": "^3.3.3"
   },
