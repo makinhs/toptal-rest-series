@@ -51,3 +51,5 @@ server.listen(port, () => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
 });
+
+export default app;

@@ -3,7 +3,7 @@ class CommonPermissionMiddleware {
     static FREE_PERMISSION = 1;
     static PAID_PERMISSION = 2;
     static ANOTHER_PAID_PERMISSION = 4;
-    static ADMIN_PERMISSION = 1 + 2 + 4;
+    static ADMIN_PERMISSION = 8;
     static SUDO_PERMISSION = 2147483647;
 
     private static instance: CommonPermissionMiddleware;

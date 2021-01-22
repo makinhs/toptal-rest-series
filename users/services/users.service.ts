@@ -13,8 +13,7 @@ class UsersService implements CRUD {
     }
 
     async create(resource: UsersDto) {
-        console.log(resource);
-        console.log(UsersDao);
+        resource.permissionLevel = 1;
         return await UsersDao.addUser(resource);
     }
 

@@ -30,6 +30,7 @@ class UsersDao {
 
     async addUser(userFields: any) {
         userFields._id = shortUUID.generate();
+        userFields.permissionLevel = 1;
         const user = new this.User(userFields);
         await user.save();
         return userFields._id;
