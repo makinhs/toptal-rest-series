@@ -6,6 +6,7 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors'
 import {CommonRoutesConfig} from './common/common.routes.config';
 import {UsersRoutes} from './users/users.routes.config';
+import {AuthRoutes} from './auth/auth.routes.config';
 import debug from 'debug';
 
 const app: express.Application = express();
@@ -28,6 +29,7 @@ app.use(expressWinston.logger({
 }));
 
 routes.push(new UsersRoutes(app));
+routes.push(new AuthRoutes(app));
 
 app.use(expressWinston.errorLogger({
     transports: [
