@@ -37,19 +37,19 @@ class UsersDao {
     }
 
     async getUserByEmail(email: string) {
-        return this.User.findOne({email: email});
+        return this.User.findOne({email: email}).exec();
     }
 
     async getUserByEmailWithPassword(email: string){
-        return this.User.findOne({email: email}).select('_id email permissionLevel +password');
+        return this.User.findOne({email: email}).select('_id email permissionLevel +password').exec();
     }
 
     async removeUserById(userId: string) {
-        return this.User.deleteOne({_id: userId});
+        return this.User.deleteOne({_id: userId}).exec();
     }
 
     async getUserById(userId: string) {
-        return this.User.findOne({_id: userId}).populate('User' , '-password');
+        return this.User.findOne({_id: userId}).populate('User' ).exec();
     }
 
     async getUsers(limit: number = 25, page: number = 0) {
