@@ -1,4 +1,4 @@
-import {UsersDto} from "../dto/users.model";
+import {UserDto} from "../dto/user.model";
 import shortid from "shortid";
 import debug from 'debug';
 
@@ -11,7 +11,7 @@ const log: debug.IDebugger = debug('app:in-memory-dao');
  */
 class UsersDao {
     private static instance: UsersDao;
-    users: Array<UsersDto> = [];
+    users: Array<UserDto> = [];
 
     constructor() {
         log('Created new instance of UsersDao');
@@ -24,7 +24,7 @@ class UsersDao {
         return UsersDao.instance;
     }
 
-    async addUser(user: UsersDto) {
+    async addUser(user: UserDto) {
         user.id = shortid.generate();
         this.users.push(user);
         return user.id;
@@ -38,13 +38,13 @@ class UsersDao {
         return this.users.find((user: { id: string; }) => user.id === userId);
     }
 
-    async putUserById(user: UsersDto) {
+    async putUserById(user: UserDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         this.users.splice(objIndex, 1, user);
         return `${user.id} updated via put`;
     }
 
-    async patchUserById(user: UsersDto) {
+    async patchUserById(user: UserDto) {
         const objIndex = this.users.findIndex((obj: { id: string; }) => obj.id === user.id);
         let currentUser = this.users[objIndex];
         const allowedPatchFields = ["password", "firstName", "lastName", "permissionLevel"];
