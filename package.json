@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/app.js",
     "debug": "export DEBUG=* && npm start",
-    "test": "mocha -r ts-node/register test/**/*.test.ts --exit"
+    "test": "mocha -r ts-node/register test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -28,12 +28,12 @@
   "dependencies": {
     "argon2": "^0.27.0",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "debug": "^4.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
-    "mongoose": "~5.x.xx",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "~5.*.*",
     "shortid": "^2.2.16",
     "winston": "^3.3.3"
   },
