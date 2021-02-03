@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/app.js",
     "debug": "export DEBUG=* && npm start",
-    "test": "mocha -r ts-node/register test/**/*.test.ts --exit"
+    "test": "mocha -r ts-node/register test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "debug": "^4.2.0",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "~5.x.xx",
     "shortid": "^2.2.16",
     "winston": "^3.3.3"
