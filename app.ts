@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import * as http from 'http';
 import * as bodyparser from 'body-parser';
