@@ -14,7 +14,7 @@ class UsersService implements CRUD {
 
     async create(resource: UserDto) {
         resource.permissionLevel = 1;
-        return await UsersDao.addUser(resource);
+        return UsersDao.addUser(resource);
     }
 
     async deleteById(resourceId: string) {
@@ -22,7 +22,7 @@ class UsersService implements CRUD {
     };
 
     async list(limit: number, page: number) {
-        return await UsersDao.getUsers(limit, page);
+        return UsersDao.getUsers(limit, page);
     };
 
     async patchById(userId: string, resource: UserDto): Promise<any> {
@@ -30,7 +30,7 @@ class UsersService implements CRUD {
     };
 
     async readById(resourceId: string) {
-        return await UsersDao.getUserById(resourceId);
+        return UsersDao.getUserById(resourceId);
     };
 
     async updateById(userId: string, resource: UserDto): Promise<any> {

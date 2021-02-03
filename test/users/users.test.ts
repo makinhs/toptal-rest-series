@@ -1,7 +1,8 @@
 import app from '../../app';
-import {agent as request} from 'supertest';
+import supertest from 'supertest';
 import {expect} from 'chai';
 import shortid from "shortid";
+import mongoose from 'mongoose';
 
 let firstUserIdTest = '';
 let firstUserBody = {
@@ -14,9 +15,14 @@ let refreshToken = '';
 const name = 'Jose';
 
 describe('Should test basic users endpoints', () => {
+    const request = supertest.agent(app);
+    after(done => {
+        // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
+        app.close(() => { mongoose.connection.close(done); });
+    });
 
     it('should POST /users', async function () {
-        const res = await request(app)
+        const res = await request
             .post('/users')
             .send(firstUserBody);
 
@@ -28,7 +34,7 @@ describe('Should test basic users endpoints', () => {
     });
 
     it('should post /auth', async function () {
-        const res = await request(app)
+        const res = await request
             .post('/auth')
             .send(firstUserBody);
         expect(res.status).to.equal(201);
@@ -40,7 +46,7 @@ describe('Should test basic users endpoints', () => {
     });
 
     it(`should GET /users/:userId`, async function () {
-        const res = await request(app)
+        const res = await request
             .get(`/users/${firstUserIdTest}`)
             .set({'Authorization': `Bearer ${accessToken}`})
             .send();
@@ -54,7 +60,7 @@ describe('Should test basic users endpoints', () => {
 
 
     it(`should GET /users`, async function () {
-        const res = await request(app)
+        const res = await request
             .get(`/users`)
             .set({'Authorization': `Bearer ${accessToken}`})
             .send();
@@ -63,7 +69,7 @@ describe('Should test basic users endpoints', () => {
 
     it.skip('should Patch /users/:userId', async function () {
 
-        const res = await request(app)
+        const res = await request
             .patch(`/users/${firstUserIdTest}`)
             .set({'Authorization': `Bearer ${accessToken}`})
             .send({
@@ -73,7 +79,7 @@ describe('Should test basic users endpoints', () => {
     });
 
     it.skip(`should GET /users/:userId to have a new name`, async function () {
-        const res = await request(app)
+        const res = await request
             .get(`/users/${firstUserIdTest}`)
             .set({'Authorization': `Bearer ${accessToken}`})
             .send();
@@ -87,7 +93,7 @@ describe('Should test basic users endpoints', () => {
     });
 
     it('should DELETE /users/:userId', async function () {
-        const res = await request(app)
+        const res = await request
             .delete(`/users/${firstUserIdTest}`)
             .set({'Authorization': `Bearer ${accessToken}`})
             .send();
