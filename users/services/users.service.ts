@@ -1,6 +1,6 @@
 import UsersDao from '../daos/users.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
-import {UsersDto} from "../dto/users.model";
+import {UserDto} from "../dto/user.model";
 
 class UsersService implements CRUD {
     private static instance: UsersService;
@@ -12,7 +12,7 @@ class UsersService implements CRUD {
         return UsersService.instance;
     }
 
-    async create(resource: UsersDto) {
+    async create(resource: UserDto) {
         resource.permissionLevel = 1;
         return await UsersDao.addUser(resource);
     }
@@ -25,7 +25,7 @@ class UsersService implements CRUD {
         return await UsersDao.getUsers(limit, page);
     };
 
-    async patchById(userId: string, resource: UsersDto): Promise<any> {
+    async patchById(userId: string, resource: UserDto): Promise<any> {
         return UsersDao.patchUserById(userId, resource)
     };
 
@@ -33,7 +33,7 @@ class UsersService implements CRUD {
         return await UsersDao.getUserById(resourceId);
     };
 
-    async updateById(userId: string, resource: UsersDto): Promise<any> {
+    async updateById(userId: string, resource: UserDto): Promise<any> {
         return UsersDao.patchUserById(userId, resource);
     };
 
