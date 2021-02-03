@@ -28,8 +28,6 @@ class JwtMiddleware {
         let refreshToken = b.toString();
         let hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {
-            delete req.jwt.iat;
-            delete req.jwt.exp;
             req.body = req.jwt;
             return next();
         } else {
