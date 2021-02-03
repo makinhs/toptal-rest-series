@@ -19,11 +19,11 @@ class CommonPermissionMiddleware {
         return CommonPermissionMiddleware.instance;
     }
 
-    minimumPermissionLevelRequired(requiredPermissionLevel: any) {
+    minimumPermissionLevelRequired(requiredPermissionLevel: number) {
         return (req: any, res: any, next: any) => {
             try {
                 let userPermissionLevel = parseInt(req.jwt.permissionLevel);
-                if (userPermissionLevel & Number.parseInt(requiredPermissionLevel)) {
+                if (userPermissionLevel & requiredPermissionLevel) {
                     next();
                 } else {
                     res.status(403).send({});
