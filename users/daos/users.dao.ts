@@ -1,5 +1,8 @@
 import mongooseService from '../../common/services/mongoose.service';
 import * as shortUUID from 'shortid';
+import debug from 'debug';
+
+const log: debug.IDebugger = debug('app:users-dao');
 
 class UsersDao {
     private static instance: UsersDao;
@@ -17,8 +20,8 @@ class UsersDao {
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
 
-
     constructor() {
+        log('Created new instance of UsersDao');
     }
 
     public static getInstance() {
