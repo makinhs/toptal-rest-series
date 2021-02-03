@@ -5,27 +5,27 @@ import {UserDto} from "../dto/user.model";
 class UsersService implements CRUD {
 
     async create(resource: UserDto) {
-        return await UsersDao.addUser(resource);
+        return UsersDao.addUser(resource);
     }
 
     async deleteById(resourceId: string) {
-        return await UsersDao.removeUserById(resourceId);
+        return UsersDao.removeUserById(resourceId);
     };
 
     async list(limit: number, page: number) {
-        return await UsersDao.getUsers();
+        return UsersDao.getUsers();
     };
 
     async patchById(resource: UserDto) {
-        return await UsersDao.patchUserById(resource)
+        return UsersDao.patchUserById(resource)
     };
 
     async readById(resourceId: string) {
-        return await UsersDao.getUserById(resourceId);
+        return UsersDao.getUserById(resourceId);
     };
 
     async updateById(resource: UserDto) {
-        return await UsersDao.putUserById(resource);
+        return UsersDao.putUserById(resource);
     };
 
     async getUserByEmail(email: string) {
