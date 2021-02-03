@@ -3,8 +3,7 @@ import express from 'express';
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-// todo: remove-me
-const jwtSecret = 'My!@!Se3cr8tH4sh3';
+const jwtSecret = process.env.JWT_SECRET;
 
 class JwtMiddleware {
     private static instance: JwtMiddleware;

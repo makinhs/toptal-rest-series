@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import * as http from 'http';
 import * as bodyparser from 'body-parser';
@@ -8,6 +11,7 @@ import {CommonRoutesConfig} from './common/common.routes.config';
 import {UsersRoutes} from './users/users.routes.config';
 import {AuthRoutes} from './auth/auth.routes.config';
 import debug from 'debug';
+import dot = Mocha.reporters.dot;
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
