@@ -3,8 +3,7 @@ import express from 'express';
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-// todo: remove-me
-const jwtSecret = 'My!@!Se3cr8tH4sh3';
+const jwtSecret = process.env.JWT_SECRET;
 
 class JwtMiddleware {
     private static instance: JwtMiddleware;
@@ -29,8 +28,6 @@ class JwtMiddleware {
         let refreshToken = b.toString();
         let hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {
-            delete req.jwt.iat;
-            delete req.jwt.exp;
             req.body = req.jwt;
             return next();
         } else {
