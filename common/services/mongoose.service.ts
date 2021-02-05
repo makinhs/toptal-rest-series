@@ -6,7 +6,7 @@ const log: debug.IDebugger = debug('app:mongoose-service');
 class MongooseService {
     private static instance: MongooseService;
     private count = 0;
-    private config = { useNewUrlParser: true,  useUnifiedTopology: true  };
+    private mongooseOptions = { useNewUrlParser: true,  useUnifiedTopology: true  };
 
     constructor() {
         this.connectWithRetry();
@@ -25,7 +25,7 @@ class MongooseService {
 
     connectWithRetry() {
         log('MongoDB connection with retry');
-        mongoose.connect("mongodb://localhost:27017/api-db",  this.config).then(() => {
+        mongoose.connect("mongodb://localhost:27017/api-db",  this.mongooseOptions).then(() => {
             log('MongoDB is connected')
         }).catch(err => {
             log(`MongoDB connection unsuccessful, retry after 5 seconds. ${++this.count}`);
