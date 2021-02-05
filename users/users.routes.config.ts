@@ -3,6 +3,7 @@ import UsersController from './controllers/users.controller';
 import UsersMiddleware from './middleware/users.middleware';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
+import { PermissionLevel } from '../common/middleware/common.permissionlevel.enum';
 import express from 'express';
 
 export class UsersRoutes extends CommonRoutesConfig {
@@ -34,7 +35,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             UsersMiddleware.validateSameEmailBelongToSameUser,
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(permissionMiddleware.PAID_PERMISSION),
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
             UsersController.put
         ]);
 
@@ -42,7 +43,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             UsersMiddleware.validatePatchEmail,
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(permissionMiddleware.PAID_PERMISSION),
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
             UsersController.patch
         ]);
 
