@@ -7,6 +7,7 @@ class MongooseService {
     private static instance: MongooseService;
     private count = 0;
     private config = { useNewUrlParser: true,  useUnifiedTopology: true  };
+
     constructor() {
         this.connectWithRetry();
     }
