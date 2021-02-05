@@ -1,21 +1,12 @@
 import mongoose from 'mongoose';
+import debug from 'debug';
 
-
-
+const log: debug.IDebugger = debug('app:mongoose-service');
 
 class MongooseService {
     private static instance: MongooseService;
-
-    options = {
-        autoIndex: false,
-        poolSize: 10,
-        bufferMaxEntries: 0,
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    };
-
-    count = 0;
-
+    private count = 0;
+    private config = { useNewUrlParser: true,  useUnifiedTopology: true  };
     constructor() {
         this.connectWithRetry();
     }
@@ -32,11 +23,11 @@ class MongooseService {
     }
 
     connectWithRetry() {
-        console.log('MongoDB connection with retry');
-        mongoose.connect("mongodb://localhost:27017/api-db", this.options).then(() => {
-            console.log('MongoDB is connected')
+        log('MongoDB connection with retry');
+        mongoose.connect("mongodb://localhost:27017/api-db",  this.config).then(() => {
+            log('MongoDB is connected')
         }).catch(err => {
-            console.log('MongoDB connection unsuccessful, retry after 5 seconds. ', ++this.count);
+            log(`MongoDB connection unsuccessful, retry after 5 seconds. ${++this.count}`);
             setTimeout(this.connectWithRetry, 5000)
         })
     };
