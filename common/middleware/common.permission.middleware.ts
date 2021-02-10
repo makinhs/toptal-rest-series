@@ -1,4 +1,8 @@
 import { PermissionLevel } from './common.permissionlevel.enum';
+import debug from 'debug';
+
+const log: debug.IDebugger = debug('app:common-permission-middleware');
+
 class CommonPermissionMiddleware {
 
 
@@ -21,7 +25,7 @@ class CommonPermissionMiddleware {
                     res.status(403).send({});
                 }
             } catch (e) {
-                console.log(e);
+                log(e);
             }
 
         };
