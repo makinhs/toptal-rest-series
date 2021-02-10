@@ -1,3 +1,4 @@
+import express from 'express';
 import { PermissionLevel } from './common.permissionlevel.enum';
 import debug from 'debug';
 
@@ -16,7 +17,7 @@ class CommonPermissionMiddleware {
     }
 
     minimumPermissionLevelRequired(requiredPermissionLevel: PermissionLevel) {
-        return (req: any, res: any, next: any) => {
+        return (req: express.Request, res: express.Response, next: express.NextFunction) => {
             try {
                 let userPermissionLevel = parseInt(req.jwt.permissionLevel);
                 if (userPermissionLevel & requiredPermissionLevel) {
@@ -31,9 +32,9 @@ class CommonPermissionMiddleware {
         };
     };
 
-    async onlySameUserOrAdminCanDoThisAction(req: any, res: any, next: any) {
-        let userPermissionLevel = parseInt(req.jwt.permissionLevel);
-        let userId = req.jwt.userId;
+    async onlySameUserOrAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
+        const userPermissionLevel = parseInt(req.jwt.permissionLevel);
+        const userId = req.jwt.userId;
         if (req.params && req.params.userId && userId === req.params.userId) {
             return next();
         } else {
@@ -45,8 +46,8 @@ class CommonPermissionMiddleware {
         }
     };
 
-    async onlyAdminCanDoThisAction(req: any, res: any, next: any) {
-        let userPermissionLevel = parseInt(req.jwt.permissionLevel);
+    async onlyAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
+        const userPermissionLevel = parseInt(req.jwt.permissionLevel);
         if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
             return next();
         } else {

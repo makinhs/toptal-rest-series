@@ -9,7 +9,7 @@ export class AuthRoutes extends CommonRoutesConfig {
         super(app, 'AuthRoutes');
     }
 
-    configureRoutes() {
+    configureRoutes():express.Application {
         this.app.post(`/auth`, [
             authMiddleware.validateBodyRequest,
             authMiddleware.verifyUserPassword,

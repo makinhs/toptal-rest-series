@@ -1,9 +1,10 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import { Jwt } from '../../common/types/jwt';
 
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-
-const jwtSecret = process.env.JWT_SECRET;
+// @ts-expect-error
+const jwtSecret:string = process.env.JWT_SECRET;
 
 class JwtMiddleware {
     private static instance: JwtMiddleware;
@@ -23,10 +24,10 @@ class JwtMiddleware {
         }
     };
 
-    validRefreshNeeded(req: any, res: express.Response, next: express.NextFunction) {
-        let b = Buffer.from(req.body.refreshToken, 'base64');
-        let refreshToken = b.toString();
-        let hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.userId + jwtSecret).digest("base64");
+    validRefreshNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
+        const b = Buffer.from(req.body.refreshToken, 'base64');
+        const refreshToken = b.toString();
+        const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {
             req.body = req.jwt;
             return next();
@@ -36,14 +37,14 @@ class JwtMiddleware {
     };
 
 
-    validJWTNeeded(req: any, res: express.Response, next: express.NextFunction) {
+    validJWTNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.headers['authorization']) {
             try {
-                let authorization = req.headers['authorization'].split(' ');
+                const authorization = req.headers['authorization'].split(' ');
                 if (authorization[0] !== 'Bearer') {
                     return res.status(401).send();
                 } else {
-                    req.jwt = jwt.verify(authorization[1], jwtSecret);
+                    res.locals.jwt = jwt.verify(authorization[1], jwtSecret) as Jwt;
                     next();
                 }
 
