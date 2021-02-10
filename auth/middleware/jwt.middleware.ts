@@ -29,7 +29,7 @@ class JwtMiddleware {
         const refreshToken = b.toString();
         const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {
-            req.body = req.jwt;
+            req.body = res.locals.jwt;
             return next();
         } else {
             return res.status(400).send({error: 'Invalid refresh token'});
