@@ -31,8 +31,9 @@ class UsersDao {
         return this.instance;
     }
 
-    async addUser(userFields: any) {
-        userFields._id = shortid.generate();
+
+    async addUser(userFields: {_id:string, permissionLevel:number}) {
+        userFields._id = shortUUID.generate();
         userFields.permissionLevel = 1;
         const user = new this.User(userFields);
         await user.save();
@@ -55,7 +56,7 @@ class UsersDao {
         return this.User.findOne({_id: userId}).populate('User' ).exec();
     }
 
-    async getUsers(limit: number = 25, page: number = 0) {
+    async getUsers(limit = 25, page = 0) {
         return this.User.find()
             .limit(limit)
             .skip(limit * page)
