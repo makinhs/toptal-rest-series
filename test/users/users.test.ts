@@ -72,7 +72,7 @@ describe('Should test basic users endpoints', function () {
     expect(res.status).to.equal(403);
   });
 
-  it.skip('should Patch /users/:userId', async function () {
+  it('should Patch /users/:userId', async function () {
 
     const res = await request
       .patch(`/users/${firstUserIdTest}`)
