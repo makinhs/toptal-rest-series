@@ -23,7 +23,7 @@ class AuthMiddleware {
     async verifyUserPassword(req: express.Request, res: express.Response, next: express.NextFunction) {
         const user: any = await usersService.getUserByEmailWithPassword(req.body.email);
         if (user) {
-            let passwordHash = user.password;
+            const passwordHash = user.password;
             if (await argon2.verify(passwordHash, req.body.password)) {
                 req.body = {
                     userId: user._id,

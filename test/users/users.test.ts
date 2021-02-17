@@ -5,18 +5,21 @@ import shortid from "shortid";
 import mongoose from 'mongoose';
 
 let firstUserIdTest = '';
-let firstUserBody = {
+const firstUserBody = {
     "email": `marcos.henrique+${shortid.generate()}@toptal.com`,
     "password": "Sup3rSecret!23"
 };
 
 let accessToken = '';
-let refreshToken = '';
+// let refreshToken = '';
 const name = 'Jose';
 
-describe('Should test basic users endpoints', () => {
-    const request = supertest.agent(app);
-    after(done => {
+describe('Should test basic users endpoints', function() {
+    let request:supertest.SuperAgentTest;
+    before(function() {
+        request = supertest.agent(app);
+    })
+    after(function(done) {
         // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
         app.close(() => { mongoose.connection.close(done); });
     });
@@ -42,7 +45,7 @@ describe('Should test basic users endpoints', () => {
         expect(res.body).to.be.an("object");
         expect(res.body.accessToken).to.be.an('string');
         accessToken = res.body.accessToken;
-        refreshToken = res.body.refreshToken;
+        // refreshToken = res.body.refreshToken;
     });
 
     it(`should GET /users/:userId`, async function () {

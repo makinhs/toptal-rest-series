@@ -28,7 +28,7 @@ class MongooseService {
         mongoose.connect("mongodb://localhost:27017/api-db",  this.mongooseOptions).then(() => {
             log('MongoDB is connected')
         }).catch(err => {
-            log(`MongoDB connection unsuccessful, retry after 5 seconds. ${++this.count}`);
+            log(`MongoDB connection unsuccessful (will do retry #${++this.count} after 5 seconds):`, err);
             setTimeout(this.connectWithRetry, 5000)
         })
     };
