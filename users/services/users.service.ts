@@ -17,24 +17,24 @@ class UsersService implements CRUD {
         return UsersDao.addUser(resource);
     }
 
-    async deleteById(resourceId: string) {
-        return UsersDao.removeUserById(resourceId);
+    async deleteById(id: string) {
+        return UsersDao.removeUserById(id);
     };
 
     async list(limit: number, page: number) {
         return UsersDao.getUsers(limit, page);
     };
 
-    async patchById(userId: string, resource: UserDto): Promise<any> {
-        return UsersDao.patchUserById(userId, resource)
+    async patchById(id: string, resource: UserDto): Promise<any> {
+        return UsersDao.patchUserById(id, resource)
     };
 
-    async readById(resourceId: string) {
-        return UsersDao.getUserById(resourceId);
+    async readById(id: string) {
+        return UsersDao.getUserById(id);
     };
 
-    async updateById(userId: string, resource: UserDto): Promise<any> {
-        return UsersDao.patchUserById(userId, resource);
+    async updateById(id: string, resource: UserDto): Promise<any> {
+        return UsersDao.patchUserById(id, resource);
     };
 
     async getUserByEmail(email: string) {
