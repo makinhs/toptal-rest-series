@@ -72,7 +72,7 @@ describe('Should test basic users endpoints', function () {
     expect(res.status).to.equal(403);
   });
 
-  it('should Patch /users/:userId', async function () {
+  it('should fail to Patch /users/:userId', async function () {
 
     const res = await request
       .patch(`/users/${firstUserIdTest}`)
@@ -80,7 +80,7 @@ describe('Should test basic users endpoints', function () {
       .send({
         firstName: name,
       });
-    expect(res.status).to.equal(204);
+    expect(res.status).to.equal(403);
   });
 
   it('should PUT /users/:userId and not be able to change permissionLevel', async function () {
