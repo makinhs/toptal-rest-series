@@ -119,7 +119,7 @@ describe('Should test basic users endpoints', function () {
     refreshToken = res.body.refreshToken;
   });
 
-  it.skip('should PUT /users/:userId and change firstName and lastName', async function () {
+  it('should PUT /users/:userId and change firstName and lastName', async function () {
     const res = await request
       .put(`/users/${firstUserIdTest}`)
       .set({'Authorization': `Bearer ${accessToken}`})
@@ -133,7 +133,7 @@ describe('Should test basic users endpoints', function () {
     expect(res.status).to.equal(204);
   });
 
-  it.skip(`should GET /users/:userId to have a new name`, async function () {
+  it(`should GET /users/:userId to have a new name`, async function () {
     const res = await request
       .get(`/users/${firstUserIdTest}`)
       .set({'Authorization': `Bearer ${accessToken}`})
@@ -141,10 +141,10 @@ describe('Should test basic users endpoints', function () {
     expect(res.status).to.equal(200);
     expect(res.body).not.to.be.empty;
     expect(res.body).to.be.an("object");
-    expect(res.body.id).to.be.an('string');
-    expect(res.body.name).to.be.equals(name);
+    expect(res.body._id).to.be.an('string');
+    expect(res.body.firstName).to.be.equals('Paulo');
     expect(res.body.email).to.be.equals(firstUserBody.email);
-    expect(res.body.id).to.be.equals(firstUserIdTest);
+    expect(res.body._id).to.be.equals(firstUserIdTest);
   });
 
   it('should DELETE /users/:userId', async function () {

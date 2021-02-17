@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { Jwt } from '../../common/types/jwt';
+import usersService from '../../users/services/users.service';
 
 // @ts-expect-error
 const jwtSecret:string = process.env.JWT_SECRET;
@@ -24,16 +25,17 @@ class JwtMiddleware {
         }
     };
 
-    validRefreshNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
+    async validRefreshNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
+        const user: any = await usersService.getUserByEmailWithPassword( res.locals.jwt.email);
         const b = Buffer.from(req.body.refreshToken, 'base64');
         const refreshToken = b.toString();
         const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {
             req.body = {
-                userId: res.locals.jwt.userId,
-                email: res.locals.jwt.email,
-                provider: res.locals.jwt.provider,
-                permissionLevel: res.locals.jwt.permissionLevel,
+                userId: user._id,
+                email: user.email,
+                provider: 'email',
+                permissionLevel: user.permissionLevel,
             };
             return next();
         } else {
