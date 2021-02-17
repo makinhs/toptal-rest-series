@@ -31,17 +31,29 @@ export class UsersRoutes extends CommonRoutesConfig {
             .delete(UsersController.removeUser);
 
         this.app.put(`/users/:userId`,[
+            jwtMiddleware.validJWTNeeded,
             UsersMiddleware.validateRequiredUserBodyFields,
             UsersMiddleware.validateSameEmailBelongToSameUser,
-            jwtMiddleware.validJWTNeeded,
+            UsersMiddleware.userCantChangePermission,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
             permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
             UsersController.put
         ]);
 
-        this.app.patch(`/users/:userId`, [
-            UsersMiddleware.validatePatchEmail,
+
+        /**
+         * This route is currently not requiring extra permissions. Please update it for admin usage in your own application.
+         */
+        this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
             jwtMiddleware.validJWTNeeded,
+            permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.FREE_PERMISSION),
+            UsersController.updatePermissionLevel
+        ])
+
+        this.app.patch(`/users/:userId`, [
+            jwtMiddleware.validJWTNeeded,
+            UsersMiddleware.validatePatchEmail,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
             permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
             UsersController.patch
