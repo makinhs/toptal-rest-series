@@ -1,5 +1,4 @@
-export interface UserDto {
-   id: string;
+export interface CreateUserDto {
    email: string;
    password: string;
    firstName?: string;

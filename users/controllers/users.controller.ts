@@ -40,7 +40,7 @@ class UsersController {
 
     async put(req: express.Request, res: express.Response) {
         req.body.password = await argon2.hash(req.body.password);
-        log(await usersService.updateById(req.params.userId, req.body));
+        log(await usersService.putById(req.params.userId, req.body));
         res.status(204).send(``);
     }
 
