@@ -1,5 +1,5 @@
 import mongooseService from '../../common/services/mongoose.service';
-import * as shortUUID from 'shortid';
+import * as shortid from 'shortid';
 import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:users-dao');
@@ -16,7 +16,7 @@ class UsersDao {
         firstName: String,
         lastName: String,
         permissionLevel: Number
-    });
+    }, { versionKey: false });
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
 
@@ -32,7 +32,7 @@ class UsersDao {
     }
 
     async addUser(userFields: any) {
-        userFields._id = shortUUID.generate();
+        userFields._id = shortid.generate();
         userFields.permissionLevel = 1;
         const user = new this.User(userFields);
         await user.save();

@@ -3,7 +3,6 @@ import express from 'express';
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-
 const jwtSecret = process.env.JWT_SECRET;
 const tokenExpirationInSeconds = 36000;
 
