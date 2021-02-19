@@ -27,7 +27,7 @@ class JwtMiddleware {
 
     async validRefreshNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
         const user: any = await usersService.getUserByEmailWithPassword( res.locals.jwt.email);
-        const b = Buffer.from(req.body.refreshToken, 'base64');
+        const b = req.body.refreshToken;
         const refreshToken = b.toString();
         const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
         if (hash === refreshToken) {

@@ -3,7 +3,6 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
-
 // @ts-expect-error
 const jwtSecret:string = process.env.JWT_SECRET;
 const tokenExpirationInSeconds = 36000;
@@ -26,8 +25,7 @@ class AuthController {
             req.body.refreshKey = salt;
             const token = jwt.sign(req.body, jwtSecret, {expiresIn: tokenExpirationInSeconds});
             const b = Buffer.from(hash);
-            const refreshToken = b.toString('base64');
-            return res.status(201).send({accessToken: token, refreshToken: refreshToken});
+            return res.status(201).send({accessToken: token, refreshToken: hash});
         } catch (err) {
             return res.status(500).send(err);
         }
