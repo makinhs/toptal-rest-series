@@ -66,7 +66,6 @@ class UsersDao {
   }
 
   async updateUserById(userId: string, userFields: PatchUserDto | PutUserDto) {
-
     const existingUser = await this.User
       .findOneAndUpdate({_id: userId}, {$set: userFields}, {new: true})
       .exec();

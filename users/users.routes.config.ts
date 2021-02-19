@@ -55,6 +55,7 @@ export class UsersRoutes extends CommonRoutesConfig {
       body('firstName').isString().optional(),
       body('lastName').isString().optional(),
       body('permissionLevel').isInt().optional(),
+      BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validatePatchEmail,
       permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
       permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
