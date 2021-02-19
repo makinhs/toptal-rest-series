@@ -32,6 +32,7 @@
     "debug": "^4.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.9.2",
     "express-winston": "^4.0.5",
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",

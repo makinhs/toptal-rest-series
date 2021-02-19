@@ -94,6 +94,7 @@ describe('Should test basic users endpoints', function () {
         lastName: 'Silva',
         permissionLevel: 256,
       });
+    console.log(res.body);
     expect(res.status).to.equal(400);
     expect(res.body.error).to.equal('User cannot change permission level');
   });
