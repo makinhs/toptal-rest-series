@@ -48,17 +48,6 @@ export class UsersRoutes extends CommonRoutesConfig {
       UsersController.put,
     ]);
 
-
-    /**
-     * This route is currently not requiring extra permissions. Please update it for admin usage in your own application.
-     */
-    this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
-      jwtMiddleware.validJWTNeeded,
-      permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-      permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.FREE_PERMISSION),
-      UsersController.updatePermissionLevel,
-    ])
-
     this.app.patch(`/users/:userId`, [
       jwtMiddleware.validJWTNeeded,
       body('email').isEmail().optional(),
@@ -70,6 +59,16 @@ export class UsersRoutes extends CommonRoutesConfig {
       permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
       permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
       UsersController.patch,
+    ]);
+
+    /**
+     * This route is currently not requiring extra permissions. Please update it for admin usage in your own application.
+     */
+    this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
+      jwtMiddleware.validJWTNeeded,
+      permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+      permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.FREE_PERMISSION),
+      UsersController.updatePermissionLevel,
     ]);
 
     return this.app;
