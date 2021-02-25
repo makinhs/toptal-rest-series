@@ -1,6 +1,6 @@
 import UsersDao from '../daos/users.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
-import {UserDto} from "../dto/user.model";
+import {UserDto} from "../dto/user.dto";
 
 class UsersService implements CRUD {
 

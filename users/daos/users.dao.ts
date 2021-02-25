@@ -1,4 +1,4 @@
-import {UserDto} from "../dto/user.model";
+import {UserDto} from "../dto/user.dto";
 import shortid from "shortid";
 import debug from 'debug';
 
