@@ -29,7 +29,7 @@ class UsersService implements CRUD {
     };
 
     async getUserByEmail(email: string) {
-        return UsersDao.getUserByEmail(email);
+        return await UsersDao.getUserByEmail(email);
     }
 }
 
