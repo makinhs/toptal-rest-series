@@ -6,8 +6,8 @@ const log: debug.IDebugger = debug('app:in-memory-dao');
 
 /**
  * NEVER USER THIS CLASS IN REAL LIFE.
- * This class was created to easy it up the explanation of other topics meanwhile writing the articles.
- * For any scenario consider using an ODM/ORM to manage your own database in a better way.
+ * This class was created to ease the explanation of other topics in the corresponding article.
+ * For any real-life scenario, consider using an ODM/ORM to manage your own database in a better way.
  */
 class UsersDao {
     users: Array<UsersDto> = [];
