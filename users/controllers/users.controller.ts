@@ -43,4 +43,3 @@ class UsersController {
 }
 
 export default new UsersController();
-//export const usersController = new UsersController();

@@ -69,4 +69,3 @@ class UsersDao {
 }
 
 export default new UsersDao();
-//export const usersDao = new UsersDao();
