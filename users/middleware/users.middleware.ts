@@ -1,9 +1,9 @@
 import express from 'express';
 import userService from '../services/users.service';
+import debug from 'debug';
 
+const log: debug.IDebugger = debug('app:users-controller');
 class UsersMiddleware {
-
-    //_this = this; // if not use arrow function
 
     async validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.email && req.body.password) {
@@ -31,9 +31,10 @@ class UsersMiddleware {
         }
     }
 
+    // Here we need to use an arrow function to bind `this` correctly
     validatePatchEmail = async(req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (req.body.email) {
-            console.log("ENTRE", req.body.email);
+            log('Validating email', req.body.email);
             
             this.validateSameEmailBelongToSameUser(req, res, next);
         } else {
