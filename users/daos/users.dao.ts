@@ -19,7 +19,7 @@ class UsersDao {
     firstName: String,
     lastName: String,
     permissionLevel: Number,
-  }, {versionKey: false});
+  });
 
   User = mongooseService.getMongoose().model('Users', this.userSchema);
 
