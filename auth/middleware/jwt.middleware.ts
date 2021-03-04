@@ -29,7 +29,11 @@ class JwtMiddleware {
         const user: any = await usersService.getUserByEmailWithPassword( res.locals.jwt.email);
         const b = req.body.refreshToken;
         const refreshToken = b.toString();
-        const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
+        const salt = crypto.createSecretKey(Buffer.from(res.locals.jwt.refreshKey.data));
+        const hash = crypto
+            .createHmac('sha512', salt)
+            .update(res.locals.jwt.userId + jwtSecret)
+            .digest("base64");
         if (hash === refreshToken) {
             req.body = {
                 userId: user._id,
