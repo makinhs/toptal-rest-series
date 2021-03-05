@@ -1,15 +1,9 @@
 import express from 'express';
 import userService from '../services/users.service';
+import debug from 'debug';
 
+const log: debug.IDebugger = debug('app:users-controller');
 class UsersMiddleware {
-    private static instance: UsersMiddleware;
-
-    static getInstance() {
-        if (!UsersMiddleware.instance) {
-            UsersMiddleware.instance = new UsersMiddleware();
-        }
-        return UsersMiddleware.instance;
-    }
 
     async validateRequiredUserBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.email && req.body.password) {
@@ -37,9 +31,12 @@ class UsersMiddleware {
         }
     }
 
-    async validatePatchEmail(req: express.Request, res: express.Response, next: express.NextFunction) {
+    // Here we need to use an arrow function to bind `this` correctly
+    validatePatchEmail = async(req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (req.body.email) {
-            UsersMiddleware.getInstance().validateSameEmailBelongToSameUser(req, res, next);
+            log('Validating email', req.body.email);
+            
+            this.validateSameEmailBelongToSameUser(req, res, next);
         } else {
             next();
         }
@@ -60,4 +57,4 @@ class UsersMiddleware {
     }
 }
 
-export default UsersMiddleware.getInstance();
+export default new UsersMiddleware();

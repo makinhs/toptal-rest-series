@@ -1,16 +1,8 @@
 import UsersDao from '../daos/users.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
-import {UserDto} from "../dto/user.model";
+import {UserDto} from "../dto/user.dto";
 
 class UsersService implements CRUD {
-    private static instance: UsersService;
-
-    static getInstance(): UsersService {
-        if (!UsersService.instance) {
-            UsersService.instance = new UsersService();
-        }
-        return UsersService.instance;
-    }
 
     async create(resource: UserDto) {
         return UsersDao.addUser(resource);
@@ -41,4 +33,4 @@ class UsersService implements CRUD {
     }
 }
 
-export default UsersService.getInstance();
+export default new UsersService();
