@@ -70,9 +70,6 @@ class UsersDao {
       .findOneAndUpdate({_id: userId}, {$set: userFields}, {new: true})
       .exec();
 
-    if (!existingUser) {
-      throw new Error(`User not id: ${userId}found`);
-    }
     return existingUser;
   }
 }
