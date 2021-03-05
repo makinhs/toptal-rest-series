@@ -29,9 +29,10 @@ app.use(expressWinston.logger({
         new winston.transports.Console()
     ],
     format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json()
-    )
+        winston.format.json(),
+        winston.format.prettyPrint(),
+        winston.format.colorize({ all: true }),
+    ),    
 }));
 
 routes.push(new UsersRoutes(app));
@@ -46,7 +47,6 @@ app.use(expressWinston.errorLogger({
         winston.format.json()
     )
 }));
-
 
 app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send(`Server running at http://localhost:${port}`)
