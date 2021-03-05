@@ -8,14 +8,6 @@ import usersService from '../../users/services/users.service';
 const jwtSecret:string = process.env.JWT_SECRET;
 
 class JwtMiddleware {
-    private static instance: JwtMiddleware;
-
-    static getInstance() {
-        if (!JwtMiddleware.instance) {
-            JwtMiddleware.instance = new JwtMiddleware();
-        }
-        return JwtMiddleware.instance;
-    }
 
     verifyRefreshBodyField(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.refreshToken) {
@@ -29,7 +21,11 @@ class JwtMiddleware {
         const user: any = await usersService.getUserByEmailWithPassword( res.locals.jwt.email);
         const b = req.body.refreshToken;
         const refreshToken = b.toString();
-        const hash = crypto.createHmac('sha512', res.locals.jwt.refreshKey).update(res.locals.jwt.userId + jwtSecret).digest("base64");
+        const salt = crypto.createSecretKey(Buffer.from(res.locals.jwt.refreshKey.data));
+        const hash = crypto
+            .createHmac('sha512', salt)
+            .update(res.locals.jwt.userId + jwtSecret)
+            .digest("base64");
         if (hash === refreshToken) {
             req.body = {
                 userId: user._id,
@@ -65,4 +61,4 @@ class JwtMiddleware {
     };
 }
 
-export default JwtMiddleware.getInstance();
+export default new JwtMiddleware();

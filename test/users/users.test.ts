@@ -83,6 +83,20 @@ describe('Should test basic users endpoints', function () {
     expect(res.status).to.equal(403);
   });
 
+  it('should fail to PUT /users/:userId with an nonexistant ID', async function () {
+    const res = await request
+      .put(`/users/i-do-not-exist`)
+      .set({'Authorization': `Bearer ${accessToken}`})
+      .send({
+        email: firstUserBody.email,
+        password: firstUserBody.password,
+        firstName: 'Marcos',
+        lastName: 'Silva',
+        permissionLevel: 256,
+      });
+    expect(res.status).to.equal(404);
+  });
+
   it('should PUT /users/:userId and not be able to change permissionLevel', async function () {
     const res = await request
       .put(`/users/${firstUserIdTest}`)
@@ -94,7 +108,6 @@ describe('Should test basic users endpoints', function () {
         lastName: 'Silva',
         permissionLevel: 256,
       });
-    console.log(res.body);
     expect(res.status).to.equal(400);
     expect(res.body.error).to.equal('User cannot change permission level');
   });

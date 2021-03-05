@@ -6,16 +6,6 @@ const log: debug.IDebugger = debug('app:common-permission-middleware');
 
 class CommonPermissionMiddleware {
 
-
-    private static instance: CommonPermissionMiddleware;
-
-    static getInstance() {
-        if (!CommonPermissionMiddleware.instance) {
-            CommonPermissionMiddleware.instance = new CommonPermissionMiddleware();
-        }
-        return CommonPermissionMiddleware.instance;
-    }
-
     minimumPermissionLevelRequired(requiredPermissionLevel: PermissionLevel) {
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
             try {
@@ -57,4 +47,4 @@ class CommonPermissionMiddleware {
 
 }
 
-export default CommonPermissionMiddleware.getInstance();
+export default new CommonPermissionMiddleware();
