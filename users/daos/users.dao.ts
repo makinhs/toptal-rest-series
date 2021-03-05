@@ -8,8 +8,6 @@ import {PutUserDto} from '../dto/put.user.dto';
 const log: debug.IDebugger = debug('app:users-dao');
 
 class UsersDao {
-  private static instance: UsersDao;
-
   Schema = mongooseService.getMongoose().Schema;
 
   userSchema = new this.Schema({
@@ -26,14 +24,6 @@ class UsersDao {
   constructor() {
     log('Created new instance of UsersDao');
   }
-
-  public static getInstance() {
-    if (!this.instance) {
-      this.instance = new UsersDao();
-    }
-    return this.instance;
-  }
-
 
   async addUser(userFields: CreateUserDto) {
     const userId = shortid.generate();
@@ -74,4 +64,4 @@ class UsersDao {
   }
 }
 
-export default UsersDao.getInstance();
+export default new UsersDao();

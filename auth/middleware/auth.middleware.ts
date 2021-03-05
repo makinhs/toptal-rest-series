@@ -3,14 +3,6 @@ import usersService from '../../users/services/users.service';
 import * as argon2 from 'argon2';
 
 class AuthMiddleware {
-    private static instance: AuthMiddleware;
-
-    static getInstance() {
-        if (!AuthMiddleware.instance) {
-            AuthMiddleware.instance = new AuthMiddleware();
-        }
-        return AuthMiddleware.instance;
-    }
 
     async validateBodyRequest(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.email && req.body.password) {
@@ -41,4 +33,4 @@ class AuthMiddleware {
     }
 }
 
-export default AuthMiddleware.getInstance();
+export default new AuthMiddleware();

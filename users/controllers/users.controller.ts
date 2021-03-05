@@ -7,14 +7,6 @@ import {PatchUserDto} from '../dto/patch.user.dto';
 const log: debug.IDebugger = debug('app:users-controller');
 
 class UsersController {
-  private static instance: UsersController;
-
-  static getInstance(): UsersController {
-    if (!UsersController.instance) {
-      UsersController.instance = new UsersController();
-    }
-    return UsersController.instance;
-  }
 
   async listUsers(req: express.Request, res: express.Response) {
     const users = await usersService.list(100, 0);
@@ -58,4 +50,4 @@ class UsersController {
   }
 }
 
-export default UsersController.getInstance();
+export default new UsersController();

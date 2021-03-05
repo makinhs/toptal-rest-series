@@ -8,14 +8,6 @@ import usersService from '../../users/services/users.service';
 const jwtSecret:string = process.env.JWT_SECRET;
 
 class JwtMiddleware {
-    private static instance: JwtMiddleware;
-
-    static getInstance() {
-        if (!JwtMiddleware.instance) {
-            JwtMiddleware.instance = new JwtMiddleware();
-        }
-        return JwtMiddleware.instance;
-    }
 
     verifyRefreshBodyField(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.refreshToken) {
@@ -69,4 +61,4 @@ class JwtMiddleware {
     };
 }
 
-export default JwtMiddleware.getInstance();
+export default new JwtMiddleware();

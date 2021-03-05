@@ -5,14 +5,6 @@ import {PutUserDto} from '../dto/put.user.dto';
 import {PatchUserDto} from '../dto/patch.user.dto';
 
 class UsersService implements CRUD {
-    private static instance: UsersService;
-
-    static getInstance(): UsersService {
-        if (!UsersService.instance) {
-            UsersService.instance = new UsersService();
-        }
-        return UsersService.instance;
-    }
 
     async create(resource: CreateUserDto) {
         resource.permissionLevel = 1;
@@ -51,4 +43,4 @@ class UsersService implements CRUD {
     }
 }
 
-export default UsersService.getInstance();
+export default new UsersService();
