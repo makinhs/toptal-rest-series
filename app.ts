@@ -38,16 +38,6 @@ app.use(expressWinston.logger({
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
 
-app.use(expressWinston.errorLogger({
-    transports: [
-        new winston.transports.Console()
-    ],
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json()
-    )
-}));
-
 app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send(`Server running at http://localhost:${port}`)
 });
