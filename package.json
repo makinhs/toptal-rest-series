@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc && node ./dist/app.js",
     "debug": "export DEBUG=* && npm start",
-    "test": "mocha -r ts-node/register 'test/**/*.test.ts'"
+    "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
+    "test-debug": "export DEBUG=* && npm test"
   },
   "repository": {
     "type": "git",
