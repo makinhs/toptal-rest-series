@@ -12,9 +12,11 @@ const firstUserBody = {
 
 let accessToken = '';
 let refreshToken = '';
-const name = 'Jose';
+const newFirstName = 'Jose';
+const newFirstName2 = 'Paulo';
+const newLastName2 = 'Faraco';
 
-describe('Should test basic users endpoints', function () {
+describe('users and auth endpoints', function () {
   let request: supertest.SuperAgentTest;
   before(function () {
     request = supertest.agent(app);
@@ -26,7 +28,7 @@ describe('Should test basic users endpoints', function () {
     });
   });
 
-  it('should POST /users', async function () {
+  it('should allow a POST to /users', async function () {
     const res = await request
       .post('/users')
       .send(firstUserBody);
@@ -38,7 +40,7 @@ describe('Should test basic users endpoints', function () {
     firstUserIdTest = res.body.id;
   });
 
-  it('should post /auth', async function () {
+  it('should allow a POST to /auth', async function () {
     const res = await request
       .post('/auth')
       .send(firstUserBody);
@@ -50,7 +52,7 @@ describe('Should test basic users endpoints', function () {
     refreshToken = res.body.refreshToken;
   });
 
-  it(`should GET /users/:userId`, async function () {
+  it('should allow a GET from /users/:userId with an access token', async function () {
     const res = await request
       .get(`/users/${firstUserIdTest}`)
       .set({'Authorization': `Bearer ${accessToken}`})
@@ -63,109 +65,115 @@ describe('Should test basic users endpoints', function () {
     expect(res.body.email).to.be.equals(firstUserBody.email);
   });
 
-
-  it(`should GET /users`, async function () {
-    const res = await request
-      .get(`/users`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send();
-    expect(res.status).to.equal(403);
-  });
-
-  it('should fail to Patch /users/:userId', async function () {
-
-    const res = await request
-      .patch(`/users/${firstUserIdTest}`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({
-        firstName: name,
+  describe('with a valid access token', async function () {
+      it('should allow a GET from /users', async function () {
+        const res = await request
+          .get(`/users`)
+          .set({'Authorization': `Bearer ${accessToken}`})
+          .send();
+        expect(res.status).to.equal(403);
       });
-    expect(res.status).to.equal(403);
-  });
-
-  it('should fail to PUT /users/:userId with an nonexistant ID', async function () {
-    const res = await request
-      .put(`/users/i-do-not-exist`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({
-        email: firstUserBody.email,
-        password: firstUserBody.password,
-        firstName: 'Marcos',
-        lastName: 'Silva',
-        permissionLevel: 256,
+    
+      it('should disallow a PATCH to /users/:userId', async function () {
+    
+        const res = await request
+          .patch(`/users/${firstUserIdTest}`)
+          .set({'Authorization': `Bearer ${accessToken}`})
+          .send({
+            firstName: newFirstName,
+          });
+        expect(res.status).to.equal(403);
       });
-    expect(res.status).to.equal(404);
-  });
 
-  it('should PUT /users/:userId and not be able to change permissionLevel', async function () {
-    const res = await request
-      .put(`/users/${firstUserIdTest}`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({
-        email: firstUserBody.email,
-        password: firstUserBody.password,
-        firstName: 'Marcos',
-        lastName: 'Silva',
-        permissionLevel: 256,
+      it('should disallow a PUT to /users/:userId with an nonexistant ID', async function () {
+        const res = await request
+          .put(`/users/i-do-not-exist`)
+          .set({'Authorization': `Bearer ${accessToken}`})
+          .send({
+            email: firstUserBody.email,
+            password: firstUserBody.password,
+            firstName: 'Marcos',
+            lastName: 'Silva',
+            permissionLevel: 256,
+          });
+        expect(res.status).to.equal(404);
       });
-    expect(res.status).to.equal(400);
-    expect(res.body.error).to.equal('User cannot change permission level');
-  });
-
-  it('should PUT /users/:userId/permissionLevel/2 and change user permission level for testing', async function () {
-    const res = await request
-      .put(`/users/${firstUserIdTest}/permissionLevel/2`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({});
-    expect(res.status).to.equal(204);
-  });
-
-  it('should post refresh the token with new permissionLevel /auth', async function () {
-    const res = await request
-      .post('/auth/refresh-token')
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({refreshToken});
-    expect(res.status).to.equal(201);
-    expect(res.body).not.to.be.empty;
-    expect(res.body).to.be.an("object");
-    expect(res.body.accessToken).to.be.an('string');
-    accessToken = res.body.accessToken;
-    refreshToken = res.body.refreshToken;
-  });
-
-  it('should PUT /users/:userId and change firstName and lastName', async function () {
-    const res = await request
-      .put(`/users/${firstUserIdTest}`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send({
-        email: firstUserBody.email,
-        password: firstUserBody.password,
-        firstName: 'Paulo',
-        lastName: 'Faraco',
-        permissionLevel: 2,
+    
+      it('should disallow a PUT to /users/:userId trying to change the permission level', async function () {
+        const res = await request
+          .put(`/users/${firstUserIdTest}`)
+          .set({'Authorization': `Bearer ${accessToken}`})
+          .send({
+            email: firstUserBody.email,
+            password: firstUserBody.password,
+            firstName: 'Marcos',
+            lastName: 'Silva',
+            permissionLevel: 256,
+          });
+        expect(res.status).to.equal(400);
+        expect(res.body.error).to.equal('User cannot change permission level');
       });
-    expect(res.status).to.equal(204);
-  });
+    
+      it('should allow a PUT to /users/:userId/permissionLevel/2 for testing', async function () {
+        const res = await request
+          .put(`/users/${firstUserIdTest}/permissionLevel/2`)
+          .set({'Authorization': `Bearer ${accessToken}`})
+          .send({});
+        expect(res.status).to.equal(204);
+      });
+    
+      describe('with a new permission level', async function () {
+          it('should allow a POST to /auth/refresh-token', async function () {
+            const res = await request
+              .post('/auth/refresh-token')
+              .set({'Authorization': `Bearer ${accessToken}`})
+              .send({refreshToken});
+            expect(res.status).to.equal(201);
+            expect(res.body).not.to.be.empty;
+            expect(res.body).to.be.an("object");
+            expect(res.body.accessToken).to.be.an('string');
+            accessToken = res.body.accessToken;
+            refreshToken = res.body.refreshToken;
+          });
+        
+          it('should allow a PUT to /users/:userId to change first and last names', async function () {
+            const res = await request
+              .put(`/users/${firstUserIdTest}`)
+              .set({'Authorization': `Bearer ${accessToken}`})
+              .send({
+                email: firstUserBody.email,
+                password: firstUserBody.password,
+                firstName: newFirstName2,
+                lastName: newLastName2,
+                permissionLevel: 2,
+              });
+            expect(res.status).to.equal(204);
+          });
+        
+          it('should allow a GET from /users/:userId and should have a new full name', async function () {
+            const res = await request
+              .get(`/users/${firstUserIdTest}`)
+              .set({'Authorization': `Bearer ${accessToken}`})
+              .send();
+            expect(res.status).to.equal(200);
+            expect(res.body).not.to.be.empty;
+            expect(res.body).to.be.an("object");
+            expect(res.body._id).to.be.an('string');
+            expect(res.body.firstName).to.be.equals(newFirstName2);
+            expect(res.body.lastName).to.be.equals(newLastName2);
+            expect(res.body.email).to.be.equals(firstUserBody.email);
+            expect(res.body._id).to.be.equals(firstUserIdTest);
+          });
+        
+          it('should allow a DELETE from /users/:userId', async function () {
+            const res = await request
+              .delete(`/users/${firstUserIdTest}`)
+              .set({'Authorization': `Bearer ${accessToken}`})
+              .send();
+            expect(res.status).to.equal(204);
+          });      
+      });
 
-  it(`should GET /users/:userId to have a new name`, async function () {
-    const res = await request
-      .get(`/users/${firstUserIdTest}`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send();
-    expect(res.status).to.equal(200);
-    expect(res.body).not.to.be.empty;
-    expect(res.body).to.be.an("object");
-    expect(res.body._id).to.be.an('string');
-    expect(res.body.firstName).to.be.equals('Paulo');
-    expect(res.body.email).to.be.equals(firstUserBody.email);
-    expect(res.body._id).to.be.equals(firstUserIdTest);
+     
   });
-
-  it('should DELETE /users/:userId', async function () {
-    const res = await request
-      .delete(`/users/${firstUserIdTest}`)
-      .set({'Authorization': `Bearer ${accessToken}`})
-      .send();
-    expect(res.status).to.equal(204);
-  });
-})
+});

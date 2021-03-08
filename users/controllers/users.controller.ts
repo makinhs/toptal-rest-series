@@ -29,24 +29,24 @@ class UsersController {
       req.body.password = await argon2.hash(req.body.password);
     }
     log(await usersService.patchById(req.params.userId, req.body));
-    res.status(204).send(``);
+    res.status(204).send('');
   }
 
   async put(req: express.Request, res: express.Response) {
     req.body.password = await argon2.hash(req.body.password);
     log(await usersService.putById(req.params.userId, req.body));
-    res.status(204).send(``);
+    res.status(204).send('');
   }
 
   async removeUser(req: express.Request, res: express.Response) {
     log(await usersService.deleteById(req.params.userId));
-    res.status(204).send(``);
+    res.status(204).send('');
   }
 
   async updatePermissionLevel(req: express.Request, res: express.Response) {
     const patchUserDto: PatchUserDto = {permissionLevel: parseInt(req.params.permissionLevel)};
     log(await usersService.patchById(req.params.userId, patchUserDto));
-    res.status(204).send(``);
+    res.status(204).send('');
   }
 }
 

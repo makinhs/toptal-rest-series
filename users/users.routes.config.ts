@@ -36,7 +36,7 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app.put(`/users/:userId`, [
       jwtMiddleware.validJWTNeeded,
       body('email').isEmail(),
-      body('password').isLength({min: 5}).withMessage('Missing field: password'),
+      body('password').isLength({min: 5}).withMessage('Must include password (5+ characters)'),
       body('firstName').isString(),
       body('lastName').isString(),
       body('permissionLevel').isInt(),
@@ -51,7 +51,8 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app.patch(`/users/:userId`, [
       jwtMiddleware.validJWTNeeded,
       body('email').isEmail().optional(),
-      body('password').isLength({min: 5}).withMessage('Missing field: password').optional(),
+      body('password').isLength({min: 5}).withMessage('Password must be 5+ characters')
+        .optional(),
       body('firstName').isString().optional(),
       body('lastName').isString().optional(),
       body('permissionLevel').isInt().optional(),
