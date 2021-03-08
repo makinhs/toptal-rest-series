@@ -8,14 +8,14 @@ class UsersMiddleware {
     if (req.body && req.body.email && req.body.password) {
       next();
     } else {
-      res.status(400).send({error: `Missing required fields email and password`});
+      res.status(400).send({error: 'Missing required fields: email and password'});
     }
   }
 
   async validateSameEmailDoesntExist(req: express.Request, res: express.Response, next: express.NextFunction) {
     const user = await userService.getUserByEmail(req.body.email);
     if (user) {
-      res.status(400).send({error: `User email already exists`});
+      res.status(400).send({error: 'User email already exists'});
     } else {
       next();
     }
@@ -27,13 +27,13 @@ class UsersMiddleware {
       res.locals.user = user;
       next();
     } else {
-      res.status(400).send({error: `Invalid email`});
+      res.status(400).send({error: 'Invalid email'});
     }
   }
 
   async userCantChangePermission(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (res.locals.user.permissionLevel !== req.body.permissionLevel) {
-      res.status(400).send({error: `User cannot change permission level`});
+      res.status(400).send({error: 'User cannot change permission level'});
     } else {
       next();
     }
