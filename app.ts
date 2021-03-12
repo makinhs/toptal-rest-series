@@ -24,7 +24,7 @@ app.use(bodyparser.json());
 app.use(cors());
 app.use(helmet());
 
-app.use(expressWinston.logger({
+const loggerOptions:expressWinston.LoggerOptions = {
     transports: [
         new winston.transports.Console()
     ],
@@ -32,8 +32,17 @@ app.use(expressWinston.logger({
         winston.format.json(),
         winston.format.prettyPrint(),
         winston.format.colorize({ all: true }),
-    ),    
-}));
+    ),
+};
+
+if (!process.env.DEBUG) {
+    loggerOptions.meta = false; // when not debugging, make terse
+    if (typeof global.it === 'function') {
+        loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
+    }
+}
+
+app.use(expressWinston.logger(loggerOptions));
 
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
