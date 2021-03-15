@@ -24,8 +24,9 @@ class CommonPermissionMiddleware {
 
     async onlySameUserOrAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
-        const userId = res.locals.jwt.userId;
-        if (req.params && req.params.userId && userId === req.params.userId) {
+        if (req.params
+            && req.params.userId
+            && req.params.userId === res.locals.jwt.userId) {
             return next();
         } else {
             if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
