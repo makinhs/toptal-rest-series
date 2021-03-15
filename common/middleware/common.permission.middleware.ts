@@ -13,7 +13,7 @@ class CommonPermissionMiddleware {
                 if (userPermissionLevel & requiredPermissionLevel) {
                     next();
                 } else {
-                    res.status(403).send({});
+                    res.status(403).send();
                 }
             } catch (e) {
                 log(e);
@@ -31,7 +31,7 @@ class CommonPermissionMiddleware {
             if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
                 return next();
             } else {
-                return res.status(403).send({});
+                return res.status(403).send();
             }
         }
     };
@@ -41,7 +41,7 @@ class CommonPermissionMiddleware {
         if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
             return next();
         } else {
-            return res.status(403).send({});
+            return res.status(403).send();
         }
     };
 
