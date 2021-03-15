@@ -13,7 +13,7 @@ class JwtMiddleware {
         if (req.body && req.body.refreshToken) {
             return next();
         } else {
-            return res.status(400).send({error: 'Missing required field: refreshToken'});
+            return res.status(400).send({errors: ['Missing required field: refreshToken']});
         }
     };
 
@@ -33,7 +33,7 @@ class JwtMiddleware {
             };
             return next();
         } else {
-            return res.status(400).send({error: 'Invalid refresh token'});
+            return res.status(400).send({errors: ['Invalid refresh token']});
         }
     };
 
