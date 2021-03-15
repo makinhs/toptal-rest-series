@@ -1,5 +1,5 @@
 import mongooseService from '../../common/services/mongoose.service';
-import * as shortid from 'shortid';
+import shortid from 'shortid';
 import debug from 'debug';
 import {CreateUserDto} from '../dto/create.user.dto';
 import {PatchUserDto} from '../dto/patch.user.dto';
