@@ -8,7 +8,7 @@ class AuthMiddleware {
         if (req.body && req.body.email && req.body.password) {
             next();
         } else {
-            res.status(400).send({error: 'Missing required fields: email and password'});
+            res.status(400).send({errors: ['Missing required fields: email and password']});
         }
     }
 
@@ -25,10 +25,10 @@ class AuthMiddleware {
                 };
                 return next();
             } else {
-                res.status(400).send({errors: 'Invalid email and/or password'});
+                res.status(400).send({errors: ['Invalid email and/or password']});
             }
         } else {
-            res.status(400).send({errors: 'Invalid email and/or password'});
+            res.status(400).send({errors: ['Invalid email and/or password']});
         }
     }
 }

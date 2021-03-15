@@ -111,7 +111,9 @@ describe('users and auth endpoints', function () {
             permissionLevel: 256,
           });
         expect(res.status).to.equal(400);
-        expect(res.body.error).to.equal('User cannot change permission level');
+        expect(res.body.errors).to.be.an('array');
+        expect(res.body.errors).to.have.length(1);
+        expect(res.body.errors[0]).to.equal('User cannot change permission level');
       });
     
       it('should allow a PUT to /users/:userId/permissionLevel/2 for testing', async function () {
