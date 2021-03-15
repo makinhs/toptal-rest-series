@@ -47,7 +47,7 @@ describe('users and auth endpoints', function () {
     expect(res.status).to.equal(201);
     expect(res.body).not.to.be.empty;
     expect(res.body).to.be.an("object");
-    expect(res.body.accessToken).to.be.an('string');
+    expect(res.body.accessToken).to.be.a('string');
     accessToken = res.body.accessToken;
     refreshToken = res.body.refreshToken;
   });
@@ -60,9 +60,9 @@ describe('users and auth endpoints', function () {
     expect(res.status).to.equal(200);
     expect(res.body).not.to.be.empty;
     expect(res.body).to.be.an("object");
-    expect(res.body._id).to.be.an('string');
-    expect(res.body._id).to.be.equals(firstUserIdTest);
-    expect(res.body.email).to.be.equals(firstUserBody.email);
+    expect(res.body._id).to.be.a('string');
+    expect(res.body._id).to.equal(firstUserIdTest);
+    expect(res.body.email).to.equal(firstUserBody.email);
   });
 
   describe('with a valid access token', async function () {
@@ -131,7 +131,7 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(201);
             expect(res.body).not.to.be.empty;
             expect(res.body).to.be.an("object");
-            expect(res.body.accessToken).to.be.an('string');
+            expect(res.body.accessToken).to.be.a('string');
             accessToken = res.body.accessToken;
             refreshToken = res.body.refreshToken;
           });
@@ -158,11 +158,11 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(200);
             expect(res.body).not.to.be.empty;
             expect(res.body).to.be.an("object");
-            expect(res.body._id).to.be.an('string');
-            expect(res.body.firstName).to.be.equals(newFirstName2);
-            expect(res.body.lastName).to.be.equals(newLastName2);
-            expect(res.body.email).to.be.equals(firstUserBody.email);
-            expect(res.body._id).to.be.equals(firstUserIdTest);
+            expect(res.body._id).to.be.a('string');
+            expect(res.body.firstName).to.equal(newFirstName2);
+            expect(res.body.lastName).to.equal(newLastName2);
+            expect(res.body.email).to.equal(firstUserBody.email);
+            expect(res.body._id).to.equal(firstUserIdTest);
           });
         
           it('should allow a DELETE from /users/:userId', async function () {
