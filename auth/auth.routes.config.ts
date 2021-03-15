@@ -1,4 +1,4 @@
-import {CommonRoutesConfig} from '../common/common.routes.config';
+import { CommonRoutesConfig } from '../common/common.routes.config';
 import authController from './controllers/auth.controller';
 import jwtMiddleware from './middleware/jwt.middleware';
 import authMiddleware from './middleware/auth.middleware';
@@ -9,17 +9,17 @@ export class AuthRoutes extends CommonRoutesConfig {
         super(app, 'AuthRoutes');
     }
 
-    configureRoutes():express.Application {
+    configureRoutes(): express.Application {
         this.app.post(`/auth`, [
             authMiddleware.validateBodyRequest,
             authMiddleware.verifyUserPassword,
-            authController.createJWT
+            authController.createJWT,
         ]);
         this.app.post(`/auth/refresh-token`, [
             jwtMiddleware.validJWTNeeded,
             jwtMiddleware.verifyRefreshBodyField,
             jwtMiddleware.validRefreshNeeded,
-            authController.createJWT
+            authController.createJWT,
         ]);
         return this.app;
     }
