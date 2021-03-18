@@ -10,24 +10,24 @@ class UsersService implements CRUD {
         return UsersDao.addUser(resource);
     }
 
-    async deleteById(resourceId: string) {
-        return UsersDao.removeUserById(resourceId);
+    async deleteById(id: string) {
+        return UsersDao.removeUserById(id);
     };
 
     async list(limit: number, page: number) {
         return UsersDao.getUsers();
     };
 
-    async patchById(resource: PatchUserDto) {
-        return UsersDao.patchUserById(resource)
+    async patchById(id: string, resource: PatchUserDto) {
+        return UsersDao.patchUserById(id, resource)
     };
 
-    async readById(resourceId: string) {
-        return UsersDao.getUserById(resourceId);
+    async readById(id: string) {
+        return UsersDao.getUserById(id);
     };
 
-    async putById(resource: PutUserDto) {
-        return UsersDao.putUserById(resource);
+    async putById(id: string, resource: PutUserDto) {
+        return UsersDao.putUserById(id, resource);
     };
 
     async getUserByEmail(email: string) {
