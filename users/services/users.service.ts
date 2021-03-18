@@ -1,10 +1,12 @@
 import UsersDao from '../daos/users.dao';
 import {CRUD} from "../../common/interfaces/crud.interface";
-import {UserDto} from "../dto/user.dto";
+import { CreateUserDto } from '../dto/create.user.dto';
+import { PutUserDto } from '../dto/put.user.dto';
+import { PatchUserDto } from '../dto/patch.user.dto';
 
 class UsersService implements CRUD {
 
-    async create(resource: UserDto) {
+    async create(resource: CreateUserDto) {
         return UsersDao.addUser(resource);
     }
 
@@ -16,7 +18,7 @@ class UsersService implements CRUD {
         return UsersDao.getUsers();
     };
 
-    async patchById(resource: UserDto) {
+    async patchById(resource: PatchUserDto) {
         return UsersDao.patchUserById(resource)
     };
 
@@ -24,7 +26,7 @@ class UsersService implements CRUD {
         return UsersDao.getUserById(resourceId);
     };
 
-    async updateById(resource: UserDto) {
+    async putById(resource: PutUserDto) {
         return UsersDao.putUserById(resource);
     };
 
