@@ -30,10 +30,6 @@ class UsersService implements CRUD {
         return UsersDao.getUserById(id);
     }
 
-    async updateById(id: string, resource: CreateUserDto): Promise<any> {
-        return UsersDao.updateUserById(id, resource);
-    }
-
     async getUserByEmail(email: string) {
         return UsersDao.getUserByEmail(email);
     }
