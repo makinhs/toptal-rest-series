@@ -29,8 +29,8 @@ class UsersDao {
         const userId = shortid.generate();
         const user = new this.User({
             _id: userId,
-            permissionLevel: 1,
             ...userFields,
+            permissionLevel: 1,
         });
         await user.save();
         return userId;

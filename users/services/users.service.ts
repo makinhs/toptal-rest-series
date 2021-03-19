@@ -6,7 +6,6 @@ import { PatchUserDto } from '../dto/patch.user.dto';
 
 class UsersService implements CRUD {
     async create(resource: CreateUserDto) {
-        resource.permissionLevel = 1;
         return UsersDao.addUser(resource);
     }
 
