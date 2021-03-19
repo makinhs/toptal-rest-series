@@ -1,21 +1,21 @@
 import express from 'express';
-import { PermissionLevel } from './common.permissionlevel.enum';
+import { PermissionFlag } from './common.permissionflag.enum';
 import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:common-permission-middleware');
 
 class CommonPermissionMiddleware {
-    minimumPermissionLevelRequired(requiredPermissionLevel: PermissionLevel) {
+    permissionFlagRequired(requiredPermissionFlag: PermissionFlag) {
         return (
             req: express.Request,
             res: express.Response,
             next: express.NextFunction
         ) => {
             try {
-                const userPermissionLevel = parseInt(
-                    res.locals.jwt.permissionLevel
+                const userPermissionFlags = parseInt(
+                    res.locals.jwt.permissionFlags
                 );
-                if (userPermissionLevel & requiredPermissionLevel) {
+                if (userPermissionFlags & requiredPermissionFlag) {
                     next();
                 } else {
                     res.status(403).send();
@@ -31,7 +31,7 @@ class CommonPermissionMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
+        const userPermissionFlags = parseInt(res.locals.jwt.permissionFlags);
         if (
             req.params &&
             req.params.userId &&
@@ -39,7 +39,7 @@ class CommonPermissionMiddleware {
         ) {
             return next();
         } else {
-            if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
+            if (userPermissionFlags & PermissionFlag.ADMIN_PERMISSION) {
                 return next();
             } else {
                 return res.status(403).send();
@@ -52,8 +52,8 @@ class CommonPermissionMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
-        if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
+        const userPermissionFlags = parseInt(res.locals.jwt.permissionFlags);
+        if (userPermissionFlags & PermissionFlag.ADMIN_PERMISSION) {
             return next();
         } else {
             return res.status(403).send();

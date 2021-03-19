@@ -4,6 +4,7 @@ import debug from 'debug';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
+import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
 const log: debug.IDebugger = debug('app:users-dao');
 
@@ -16,7 +17,7 @@ class UsersDao {
         password: { type: String, select: false },
         firstName: String,
         lastName: String,
-        permissionLevel: Number,
+        permissionFlags: Number,
     });
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
@@ -30,7 +31,7 @@ class UsersDao {
         const user = new this.User({
             _id: userId,
             ...userFields,
-            permissionLevel: 1,
+            permissionFlags: PermissionFlag.FREE_PERMISSION,
         });
         await user.save();
         return userId;
@@ -42,7 +43,7 @@ class UsersDao {
 
     async getUserByEmailWithPassword(email: string) {
         return this.User.findOne({ email: email })
-            .select('_id email permissionLevel +password')
+            .select('_id email permissionFlags +password')
             .exec();
     }
 

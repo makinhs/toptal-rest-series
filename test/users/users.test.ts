@@ -89,7 +89,7 @@ describe('users and auth endpoints', function () {
                     password: firstUserBody.password,
                     firstName: 'Marcos',
                     lastName: 'Silva',
-                    permissionLevel: 256,
+                    permissionFlags: 256,
                 });
             expect(res.status).to.equal(404);
         });
@@ -103,7 +103,7 @@ describe('users and auth endpoints', function () {
                     password: firstUserBody.password,
                     firstName: 'Marcos',
                     lastName: 'Silva',
-                    permissionLevel: 256,
+                    permissionFlags: 256,
                 });
             expect(res.status).to.equal(400);
             expect(res.body.errors).to.be.an('array');
@@ -113,9 +113,9 @@ describe('users and auth endpoints', function () {
             );
         });
 
-        it('should allow a PUT to /users/:userId/permissionLevel/2 for testing', async function () {
+        it('should allow a PUT to /users/:userId/permissionFlags/2 for testing', async function () {
             const res = await request
-                .put(`/users/${firstUserIdTest}/permissionLevel/2`)
+                .put(`/users/${firstUserIdTest}/permissionFlags/2`)
                 .set({ Authorization: `Bearer ${accessToken}` })
                 .send({});
             expect(res.status).to.equal(204);
@@ -144,7 +144,7 @@ describe('users and auth endpoints', function () {
                         password: firstUserBody.password,
                         firstName: newFirstName2,
                         lastName: newLastName2,
-                        permissionLevel: 2,
+                        permissionFlags: 2,
                     });
                 expect(res.status).to.equal(204);
             });

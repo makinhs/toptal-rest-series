@@ -42,9 +42,9 @@ class UsersController {
         res.status(204).send();
     }
 
-    async updatePermissionLevel(req: express.Request, res: express.Response) {
+    async updatePermissionFlags(req: express.Request, res: express.Response) {
         const patchUserDto: PatchUserDto = {
-            permissionLevel: parseInt(req.params.permissionLevel),
+            permissionFlags: parseInt(req.params.permissionFlags),
         };
         log(await usersService.patchById(req.params.userId, patchUserDto));
         res.status(204).send();

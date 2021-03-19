@@ -34,7 +34,7 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        if (res.locals.user.permissionLevel !== req.body.permissionLevel) {
+        if (res.locals.user.permissionFlags !== req.body.permissionFlags) {
             res.status(400).send({
                 errors: ['User cannot change permission level'],
             });

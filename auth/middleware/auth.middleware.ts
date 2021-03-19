@@ -18,7 +18,7 @@ class AuthMiddleware {
                     userId: user._id,
                     email: user.email,
                     provider: 'email',
-                    permissionLevel: user.permissionLevel,
+                    permissionFlags: user.permissionFlags,
                 };
                 return next();
             }
