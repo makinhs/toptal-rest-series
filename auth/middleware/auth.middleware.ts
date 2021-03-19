@@ -3,20 +3,6 @@ import usersService from '../../users/services/users.service';
 import * as argon2 from 'argon2';
 
 class AuthMiddleware {
-    async validateBodyRequest(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
-        if (req.body && req.body.email && req.body.password) {
-            next();
-        } else {
-            res.status(400).send({
-                errors: ['Missing required fields: email and password'],
-            });
-        }
-    }
-
     async verifyUserPassword(
         req: express.Request,
         res: express.Response,
@@ -35,14 +21,9 @@ class AuthMiddleware {
                     permissionLevel: user.permissionLevel,
                 };
                 return next();
-            } else {
-                res.status(400).send({
-                    errors: ['Invalid email and/or password'],
-                });
             }
-        } else {
-            res.status(400).send({ errors: ['Invalid email and/or password'] });
         }
+        res.status(400).send({ errors: ['Invalid email and/or password'] });
     }
 }
 
