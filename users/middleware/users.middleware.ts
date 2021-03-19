@@ -2,20 +2,6 @@ import express from 'express';
 import userService from '../services/users.service';
 
 class UsersMiddleware {
-    async validateRequiredUserBodyFields(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
-        if (req.body && req.body.email && req.body.password) {
-            next();
-        } else {
-            res.status(400).send({
-                errors: ['Missing required fields: email and password'],
-            });
-        }
-    }
-
     async validateSameEmailDoesntExist(
         req: express.Request,
         res: express.Response,

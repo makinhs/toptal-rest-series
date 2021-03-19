@@ -23,7 +23,11 @@ export class UsersRoutes extends CommonRoutesConfig {
                 UsersController.listUsers
             )
             .post(
-                UsersMiddleware.validateRequiredUserBodyFields,
+                body('email').isEmail(),
+                body('password')
+                    .isLength({ min: 5 })
+                    .withMessage('Must include password (5+ characters)'),
+                BodyValidationMiddleware.verifyBodyFieldsErrors,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser
             );
