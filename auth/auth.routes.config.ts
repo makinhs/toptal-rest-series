@@ -3,6 +3,8 @@ import authController from './controllers/auth.controller';
 import jwtMiddleware from './middleware/jwt.middleware';
 import authMiddleware from './middleware/auth.middleware';
 import express from 'express';
+import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
+import { body } from 'express-validator';
 
 export class AuthRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -11,7 +13,9 @@ export class AuthRoutes extends CommonRoutesConfig {
 
     configureRoutes(): express.Application {
         this.app.post(`/auth`, [
-            authMiddleware.validateBodyRequest,
+            body('email').isEmail(),
+            body('password').isString(),
+            BodyValidationMiddleware.verifyBodyFieldsErrors,
             authMiddleware.verifyUserPassword,
             authController.createJWT,
         ]);

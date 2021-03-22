@@ -3,7 +3,7 @@ import UsersController from './controllers/users.controller';
 import UsersMiddleware from './middleware/users.middleware';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
-import { PermissionLevel } from '../common/middleware/common.permissionlevel.enum';
+import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
 
@@ -23,7 +23,11 @@ export class UsersRoutes extends CommonRoutesConfig {
                 UsersController.listUsers
             )
             .post(
-                UsersMiddleware.validateRequiredUserBodyFields,
+                body('email').isEmail(),
+                body('password')
+                    .isLength({ min: 5 })
+                    .withMessage('Must include password (5+ characters)'),
+                BodyValidationMiddleware.verifyBodyFieldsErrors,
                 UsersMiddleware.validateSameEmailDoesntExist,
                 UsersController.createUser
             );
@@ -40,26 +44,23 @@ export class UsersRoutes extends CommonRoutesConfig {
             .delete(UsersController.removeUser);
 
         this.app.put(`/users/:userId`, [
-            jwtMiddleware.validJWTNeeded,
             body('email').isEmail(),
             body('password')
                 .isLength({ min: 5 })
                 .withMessage('Must include password (5+ characters)'),
             body('firstName').isString(),
             body('lastName').isString(),
-            body('permissionLevel').isInt(),
+            body('permissionFlags').isInt(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validateSameEmailBelongToSameUser,
             UsersMiddleware.userCantChangePermission,
-            permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
+            permissionMiddleware.permissionFlagRequired(
+                PermissionFlag.PAID_PERMISSION
             ),
             UsersController.put,
         ]);
 
         this.app.patch(`/users/:userId`, [
-            jwtMiddleware.validJWTNeeded,
             body('email').isEmail().optional(),
             body('password')
                 .isLength({ min: 5 })
@@ -67,26 +68,27 @@ export class UsersRoutes extends CommonRoutesConfig {
                 .optional(),
             body('firstName').isString().optional(),
             body('lastName').isString().optional(),
-            body('permissionLevel').isInt().optional(),
+            body('permissionFlags').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
-            permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
+            permissionMiddleware.permissionFlagRequired(
+                PermissionFlag.PAID_PERMISSION
             ),
             UsersController.patch,
         ]);
 
         /**
-         * This route is currently not requiring extra permissions. Please update it for admin usage in your own application.
+         * This route does not currently require extra permissions.
+         * 
+         * Please update it for admin usage in your own application!
          */
-        this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
+        this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.FREE_PERMISSION
+            permissionMiddleware.permissionFlagRequired(
+                PermissionFlag.FREE_PERMISSION
             ),
-            UsersController.updatePermissionLevel,
+            UsersController.updatePermissionFlags,
         ]);
 
         return this.app;

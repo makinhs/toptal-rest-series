@@ -6,7 +6,6 @@ import { PatchUserDto } from '../dto/patch.user.dto';
 
 class UsersService implements CRUD {
     async create(resource: CreateUserDto) {
-        resource.permissionLevel = 1;
         return UsersDao.addUser(resource);
     }
 
@@ -28,10 +27,6 @@ class UsersService implements CRUD {
 
     async readById(id: string) {
         return UsersDao.getUserById(id);
-    }
-
-    async updateById(id: string, resource: CreateUserDto): Promise<any> {
-        return UsersDao.updateUserById(id, resource);
     }
 
     async getUserByEmail(email: string) {

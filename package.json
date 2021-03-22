@@ -28,7 +28,6 @@
   "homepage": "https://github.com/makinhs/toptal-rest-series#readme",
   "dependencies": {
     "argon2": "^0.27.0",
-    "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "debug": "^4.2.0",
     "dotenv": "^8.2.0",
