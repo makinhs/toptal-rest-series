@@ -1,6 +1,5 @@
 import express from 'express';
 import * as http from 'http';
-import * as bodyparser from 'body-parser';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
@@ -14,7 +13,7 @@ const port = 3000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
 
-app.use(bodyparser.json());
+app.use(express.json());
 app.use(cors());
 
 app.use(
