@@ -16,23 +16,25 @@ const debugLog: debug.IDebugger = debug('app');
 app.use(express.json());
 app.use(cors());
 
-app.use(
-    expressWinston.logger({
-        transports: [new winston.transports.Console()],
-        format: winston.format.combine(
-            winston.format.json(),
-            winston.format.prettyPrint(),
-            winston.format.colorize({ all: true })
-        ),
-    })
-);
+const loggerOptions: expressWinston.LoggerOptions = {
+    transports: [new winston.transports.Console()],
+    format: winston.format.combine(
+        winston.format.json(),
+        winston.format.prettyPrint(),
+        winston.format.colorize({ all: true })
+    ),
+};
 
 if (process.env.DEBUG) {
     process.on('unhandledRejection', function(reason) {
         debugLog('Unhandled Rejection:', reason);
         process.exit(1);
     });
+} else {
+    loggerOptions.meta = false; // when not debugging, make terse
 }
+
+app.use(expressWinston.logger(loggerOptions));
 
 routes.push(new UsersRoutes(app));
 
