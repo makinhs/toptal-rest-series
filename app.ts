@@ -27,6 +27,13 @@ app.use(
     })
 );
 
+if (process.env.DEBUG) {
+    process.on('unhandledRejection', function(reason) {
+        debugLog('Unhandled Rejection:', reason);
+        process.exit(1);
+    });
+}
+
 routes.push(new UsersRoutes(app));
 
 app.get('/', (req: express.Request, res: express.Response) => {
