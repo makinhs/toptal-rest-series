@@ -34,7 +34,12 @@ const loggerOptions: expressWinston.LoggerOptions = {
     ),
 };
 
-if (!process.env.DEBUG) {
+if (process.env.DEBUG) {
+    process.on('unhandledRejection', function(reason) {
+        debugLog('Unhandled Rejection:', reason);
+        process.exit(1);
+    });
+} else {
     loggerOptions.meta = false; // when not debugging, make terse
     if (typeof global.it === 'function') {
         loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
