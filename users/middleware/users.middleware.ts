@@ -21,7 +21,7 @@ class UsersMiddleware {
         next: express.NextFunction
     ) {
         const user = await userService.getUserByEmail(req.body.email);
-        if (user && user.id === req.params.userId) {
+        if (user && user._id === req.params.userId) {
             res.locals.user = user;
             next();
         } else {
