@@ -11,7 +11,7 @@ class UsersController {
     }
 
     async getUserById(req: express.Request, res: express.Response) {
-        const user = await usersService.readById(req.params.userId);
+        const user = await usersService.readById(req.body.id);
         res.status(200).send(user);
     }
 
@@ -31,17 +31,12 @@ class UsersController {
 
     async put(req: express.Request, res: express.Response) {
         req.body.password = await argon2.hash(req.body.password);
-        log(
-            await usersService.putById(req.params.userId, {
-                id: req.params.userId,
-                ...req.body,
-            })
-        );
+        log(await usersService.putById(req.body.id, req.body));
         res.status(204).send();
     }
 
     async removeUser(req: express.Request, res: express.Response) {
-        log(await usersService.deleteById(req.params.userId));
+        log(await usersService.deleteById(req.body.id));
         res.status(204).send();
     }
 }
