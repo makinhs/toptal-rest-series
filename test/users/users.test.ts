@@ -94,7 +94,7 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(404);
         });
 
-        it('should disallow a PUT to /users/:userId trying to change the permission level', async function () {
+        it('should disallow a PUT to /users/:userId trying to change the permission flags', async function () {
             const res = await request
                 .put(`/users/${firstUserIdTest}`)
                 .set({ Authorization: `Bearer ${accessToken}` })
@@ -109,7 +109,7 @@ describe('users and auth endpoints', function () {
             expect(res.body.errors).to.be.an('array');
             expect(res.body.errors).to.have.length(1);
             expect(res.body.errors[0]).to.equal(
-                'User cannot change permission level'
+                'User cannot change permission flags'
             );
         });
 
@@ -121,7 +121,7 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(204);
         });
 
-        describe('with a new permission level', async function () {
+        describe('with a new set of permission flags', async function () {
             it('should allow a POST to /auth/refresh-token', async function () {
                 const res = await request
                     .post('/auth/refresh-token')
