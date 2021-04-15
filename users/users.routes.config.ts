@@ -19,7 +19,9 @@ export class UsersRoutes extends CommonRoutesConfig {
             .route(`/users`)
             .get(
                 jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlyAdminCanDoThisAction,
+                permissionMiddleware.permissionFlagRequired(
+                    PermissionFlag.ADMIN_PERMISSION
+                ),
                 UsersController.listUsers
             )
             .post(
@@ -79,7 +81,7 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         /**
          * This route does not currently require extra permissions.
-         * 
+         *
          * Please update it for admin usage in your own application!
          */
         this.app.put(`/users/:userId/permissionFlags/:permissionFlags`, [

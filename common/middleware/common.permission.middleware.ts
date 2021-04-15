@@ -46,19 +46,6 @@ class CommonPermissionMiddleware {
             }
         }
     }
-
-    async onlyAdminCanDoThisAction(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
-        const userPermissionFlags = parseInt(res.locals.jwt.permissionFlags);
-        if (userPermissionFlags & PermissionFlag.ADMIN_PERMISSION) {
-            return next();
-        } else {
-            return res.status(403).send();
-        }
-    }
 }
 
 export default new CommonPermissionMiddleware();

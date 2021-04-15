@@ -36,7 +36,7 @@ class UsersMiddleware {
     ) {
         if (res.locals.user.permissionFlags !== req.body.permissionFlags) {
             res.status(400).send({
-                errors: ['User cannot change permission level'],
+                errors: ['User cannot change permission flags'],
             });
         } else {
             next();
