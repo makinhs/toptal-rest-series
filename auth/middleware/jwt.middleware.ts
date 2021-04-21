@@ -41,7 +41,6 @@ class JwtMiddleware {
             req.body = {
                 userId: user._id,
                 email: user.email,
-                provider: 'email',
                 permissionFlags: user.permissionFlags,
             };
             return next();
