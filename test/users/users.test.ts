@@ -34,7 +34,7 @@ describe('users and auth endpoints', function () {
         expect(res.status).to.equal(201);
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
-        expect(res.body.id).to.be.an('string');
+        expect(res.body.id).to.be.a('string');
         firstUserIdTest = res.body.id;
     });
 
