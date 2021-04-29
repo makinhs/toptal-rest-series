@@ -73,6 +73,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('permissionFlags').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchEmail,
+            UsersMiddleware.userCantChangePermission,
             permissionMiddleware.permissionFlagRequired(
                 PermissionFlag.PAID_PERMISSION
             ),

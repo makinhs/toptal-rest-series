@@ -34,7 +34,7 @@ describe('users and auth endpoints', function () {
         expect(res.status).to.equal(201);
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
-        expect(res.body.id).to.be.an('string');
+        expect(res.body.id).to.be.a('string');
         firstUserIdTest = res.body.id;
     });
 
@@ -61,7 +61,7 @@ describe('users and auth endpoints', function () {
         expect(res.body.email).to.equal(firstUserBody.email);
     });
 
-    describe('with a valid access token', async function () {
+    describe('with a valid access token', function () {
         it('should allow a GET from /users', async function () {
             const res = await request
                 .get(`/users`)
@@ -80,7 +80,7 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(403);
         });
 
-        it('should disallow a PUT to /users/:userId with an nonexistant ID', async function () {
+        it('should disallow a PUT to /users/:userId with an nonexistent ID', async function () {
             const res = await request
                 .put(`/users/i-do-not-exist`)
                 .set({ Authorization: `Bearer ${accessToken}` })
@@ -121,7 +121,7 @@ describe('users and auth endpoints', function () {
             expect(res.status).to.equal(204);
         });
 
-        describe('with a new set of permission flags', async function () {
+        describe('with a new set of permission flags', function () {
             it('should allow a POST to /auth/refresh-token', async function () {
                 const res = await request
                     .post('/auth/refresh-token')
