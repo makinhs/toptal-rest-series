@@ -25,12 +25,7 @@ const loggerOptions: expressWinston.LoggerOptions = {
     ),
 };
 
-if (process.env.DEBUG) {
-    process.on('unhandledRejection', function(reason) {
-        debugLog('Unhandled Rejection:', reason);
-        process.exit(1);
-    });
-} else {
+if (!process.env.DEBUG) {
     loggerOptions.meta = false; // when not debugging, make terse
 }
 
@@ -38,12 +33,13 @@ app.use(expressWinston.logger(loggerOptions));
 
 routes.push(new UsersRoutes(app));
 
+const runningMessage = `Server running at http://localhost:${port}`;
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.status(200).send(`Server running at http://localhost:${port}`)
+    res.status(200).send(runningMessage)
 });
 server.listen(port, () => {
-    debugLog(`Server running at http://localhost:${port}`);
     routes.forEach((route: CommonRoutesConfig) => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
+    console.log(runningMessage);
 });
