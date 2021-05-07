@@ -46,12 +46,13 @@ app.use(expressWinston.logger(loggerOptions));
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
 
+const runningMessage = `Server running at http://localhost:${port}`;
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.status(200).send(`Server running at http://localhost:${port}`);
+    res.status(200).send(runningMessage)
 });
 export default server.listen(port, () => {
-    debugLog(`Server running at http://localhost:${port}`);
     routes.forEach((route: CommonRoutesConfig) => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
+    console.log(runningMessage);
 });
