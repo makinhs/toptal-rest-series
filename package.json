@@ -1,6 +1,6 @@
 {
   "name": "toptal-rest-series",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A guide to REST API using Typescript created for Toptal blog",
   "main": "index.js",
   "scripts": {
