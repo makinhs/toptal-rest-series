@@ -25,12 +25,7 @@ const loggerOptions: expressWinston.LoggerOptions = {
     ),
 };
 
-if (process.env.DEBUG) {
-    process.on('unhandledRejection', function(reason) {
-        debugLog('Unhandled Rejection:', reason);
-        process.exit(1);
-    });
-} else {
+if (!process.env.DEBUG) {
     loggerOptions.meta = false; // when not debugging, make terse
 }
 
