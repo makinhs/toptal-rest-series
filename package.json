@@ -1,10 +1,10 @@
 {
   "name": "toptal-rest-series",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A guide to REST API using Typescript created for Toptal blog",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node ./dist/app.js",
+    "start": "tsc && node --unhandled-rejections=strict ./dist/app.js",
     "debug": "export DEBUG=* && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
