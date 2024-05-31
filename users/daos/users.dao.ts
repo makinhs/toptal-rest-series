@@ -1,79 +1,130 @@
-import mongooseService from '../../common/services/mongoose.service';
-import shortid from 'shortid';
-import debug from 'debug';
+
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
+
+import prismaService from '../../common/services/prisma.service';
+
 import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
-const log: debug.IDebugger = debug('app:users-dao');
+import shortid from 'shortid';
+import debug from 'debug';
+
+const log: debug.IDebugger = debug('app:prisma-dao');
 
 class UsersDao {
-    Schema = mongooseService.getMongoose().Schema;
-
-    userSchema = new this.Schema({
-        _id: String,
-        email: String,
-        password: { type: String, select: false },
-        firstName: String,
-        lastName: String,
-        permissionFlags: Number,
-    }, { id: false });
-
-    User = mongooseService.getMongoose().model('Users', this.userSchema);
-
     constructor() {
         log('Created new instance of UsersDao');
     }
 
-    async addUser(userFields: CreateUserDto) {
-        const userId = shortid.generate();
-        const user = new this.User({
-            _id: userId,
-            ...userFields,
-            permissionFlags: PermissionFlag.FREE_PERMISSION,
-        });
-        await user.save();
-        return userId;
+removeHidden(user: any) {
+    if (user) {
+        const hiddenFields = ['password']
+        for (const field of hiddenFields) {
+            if (field in user) {
+                delete user[field];
+            }
+        }
     }
+    return user;
+}
 
-    async getUserByEmail(email: string) {
-        return this.User.findOne({ email: email }).exec();
+async addUser(user: CreateUserDto) {
+    let data = user as any;
+    data.id = shortid.generate();
+    const usersCount = await this.getUsersCount();
+    if (usersCount > 0) {
+        data.permissionFlags = PermissionFlag.FREE_PERMISSION;
     }
+    const added = await prismaService.users.create({data});
+    return added.id;
+}
 
-    async getUserByEmailWithPassword(email: string) {
-        return this.User.findOne({ email: email })
-            .select('_id email permissionFlags +password')
-            .exec();
+async getUsers(limit=25, page=0) {
+    const users = await prismaService.users.findMany({
+        take: limit,
+        skip: limit * page,
+        /*omit: {
+            password: true,
+        },*/
+    });
+    return users.map(this.removeHidden);
+}
+
+async getUserById(userId: string) {
+    const user = await prismaService.users.findUnique({
+        /*omit: {
+            password: true,
+        },*/
+        where: {id: userId},
+    });
+    if (user) {
+        //@ts-ignore
+        user._id = user.id;
     }
+    return this.removeHidden(user);
+}
 
-    async removeUserById(userId: string) {
-        return this.User.deleteOne({ _id: userId }).exec();
+async putUserById(userId: string, user: PutUserDto) {
+    await prismaService.users.update({where: {id: userId}, data: user});
+    return `${userId} updated via put`;
+}
+
+async getUserByEmail(email: string) {
+    const user = await prismaService.users.findUnique({
+        /*omit: {
+            password: true,
+        },*/
+        where: {email},
+    });
+    return this.removeHidden(user);
+}
+
+async getUserByEmailWithPassword(email: string) {
+    const user = await prismaService.users.findUnique({
+        where: {email},
+        select: {
+            id: true,
+            email: true,
+            password: true,
+            permissionFlags: true,
+        },
+    });
+    if (user) {
+        //@ts-ignore
+        user._id = user.id;
     }
+    return user;
+}
 
-    async getUserById(userId: string) {
-        return this.User.findOne({ _id: userId }).populate('User').exec();
+async patchUserById(userId: string, user: PatchUserDto) {
+    let data: any = {};
+    const allowedPatchFields = [
+        'password',
+        'firstName',
+        'lastName',
+        'permissionFlags',
+    ];
+    for (let field of allowedPatchFields) {
+        if (field in user) {
+            // @ts-ignore
+            data[field] = user[field];
+        }
     }
+    await prismaService.users.update({where: {id: userId}, data});
+    return `${userId} patched`;
+}
 
-    async getUsers(limit = 25, page = 0) {
-        return this.User.find()
-            .limit(limit)
-            .skip(limit * page)
-            .exec();
-    }
+async removeUserById(userId: string) {
+    await prismaService.users.delete({where: {id: userId}});
+    return `${userId} removed`;
+}
 
-    async updateUserById(
-        userId: string,
-        userFields: PatchUserDto | PutUserDto
-    ) {
-        const existingUser = await this.User.findOneAndUpdate(
-            { _id: userId },
-            { $set: userFields },
-            { new: true }
-        ).exec();
-
-        return existingUser;
-    }
+async getUsersCount() {
+    const userCount = await prismaService.users.count()
+    return userCount;
+}
 }
 
 export default new UsersDao();
+

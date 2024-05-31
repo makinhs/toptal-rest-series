@@ -2,19 +2,25 @@ import app from '../../app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
-import mongoose from 'mongoose';
+import prismaService from '../../common/services/prisma.service';
+
+import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
+import usersService from '../../users/services/users.service';
 
 let firstUserIdTest = '';
 const firstUserBody = {
     email: `marcos.henrique+${shortid.generate()}@toptal.com`,
     password: 'Sup3rSecret!23',
 };
+let otherUserId = '';
 
 let accessToken = '';
 let refreshToken = '';
 const newFirstName = 'Jose';
 const newFirstName2 = 'Paulo';
 const newLastName2 = 'Faraco';
+
+const permissionFlags = PermissionFlag.PAID_PERMISSION;
 
 describe('users and auth endpoints', function () {
     let request: supertest.SuperAgentTest;
@@ -23,19 +29,51 @@ describe('users and auth endpoints', function () {
     });
     after(function (done) {
         // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
-        app.close(() => {
-            mongoose.connection.close(done);
+        app.close(async () => {
+            await prismaService.users.deleteMany({
+                where: {email: firstUserBody.email},
+            })
+            await prismaService.users.deleteMany({
+                where: {id: otherUserId},
+            })
+            prismaService.$disconnect();
+            done()
         });
     });
 
+    it('the first user may set his/her permissionFlags', async function () {
+        const secondUserBody = {
+            email: `marcos.henrique+${shortid.generate()}@toptal.com`,
+            password: 'Sup3rSecret!23',
+        };
+        const res = await request.post('/users').send(
+            Object.assign({}, secondUserBody, {permissionFlags})
+        );
+        otherUserId = res.body.id;
+
+        const user = await usersService.readById(otherUserId);
+        const savedFlags = user?.permissionFlags;
+
+        expect(savedFlags).to.equal(permissionFlags);
+    });
+
     it('should allow a POST to /users', async function () {
-        const res = await request.post('/users').send(firstUserBody);
+        const res = await request.post('/users').send(
+            Object.assign({}, firstUserBody, {permissionFlags})
+        );
 
         expect(res.status).to.equal(201);
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
         expect(res.body.id).to.be.a('string');
         firstUserIdTest = res.body.id;
+    });
+
+    it('subsequent users may not set their permissionFlags', async function () {
+        const user = await usersService.readById(firstUserIdTest);
+        const savedFlags = user?.permissionFlags;
+
+        expect(savedFlags).to.equal(PermissionFlag.FREE_PERMISSION);
     });
 
     it('should allow a POST to /auth', async function () {
